@@ -1,0 +1,3 @@
+issues=true
+issues-wo-labels=false
+exclude_labels=duplicate,question,wontfix,discussion,needs more info,backend,cocoapods,off topic,product usage
