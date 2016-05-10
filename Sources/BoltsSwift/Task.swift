@@ -186,7 +186,7 @@ public final class Task<TResult> {
     }
 
     /**
-     Enqueues a given closure to be run once this task completes with success (result or error).
+     Enqueues a given closure to be run once this task completes with success (has intended result).
 
      - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
      - parameter continuation: The closure that returns a task to chain on.
@@ -203,7 +203,7 @@ public final class Task<TResult> {
     }
 
     /**
-     Enqueues a given closure to be run once this task completes with success (result or error).
+     Enqueues a given closure to be run once this task completes with success (has intended result).
 
      - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
      - parameter continuation: The closure that returns a task to chain on.
@@ -219,6 +219,80 @@ public final class Task<TResult> {
                 return Task<S>.cancelledTask()
             case .Error(let error):
                 return Task<S>(state: .Error(error))
+            default:
+                abort() // This should never happen.
+            }
+        }
+    }
+
+    /**
+     Enqueues a given closure to be run once this task completes with error.
+
+     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter continuation: The closure that returns a task to chain on.
+
+     - returns: A task that will be completed when a task returned from a closure is completed.
+     */
+    public func continueOnErrorWith<E: ErrorType>(executor: Executor = .Default, continuation: (E throws -> TResult)) -> Task {
+        return continueOnErrorWithTask(executor) { (error: E) in
+            let state = TaskState.fromClosure({
+                try continuation(error)
+            })
+            return Task(state: state)
+        }
+    }
+
+    /**
+     Enqueues a given closure to be run once this task completes with error.
+
+     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter continuation: The closure that returns a task to chain on.
+
+     - returns: A task that will be completed when a task returned from a closure is completed.
+     */
+    public func continueOnErrorWith(executor: Executor = .Default, continuation: (ErrorType throws -> TResult)) -> Task {
+        return continueOnErrorWithTask(executor) { (error: ErrorType) in
+            let state = TaskState.fromClosure({
+                try continuation(error)
+            })
+            return Task(state: state)
+        }
+    }
+
+    /**
+     Enqueues a given closure to be run once this task completes with error.
+
+     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter continuation: The closure that returns a task to chain on.
+
+     - returns: A task that will be completed when a task returned from a closure is completed.
+     */
+    public func continueOnErrorWithTask<E: ErrorType>(executor: Executor = .Default, continuation: (E throws -> Task)) -> Task {
+        return continueOnErrorWithTask(executor) { (error: ErrorType) in
+            if let error = error as? E {
+                return try continuation(error)
+            }
+            return Task(state: .Error(error))
+        }
+    }
+
+    /**
+     Enqueues a given closure to be run once this task completes with error.
+
+     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter continuation: The closure that returns a task to chain on.
+
+     - returns: A task that will be completed when a task returned from a closure is completed.
+     */
+    public func continueOnErrorWithTask(executor: Executor = .Default, continuation: (ErrorType throws -> Task)) -> Task {
+        return continueWithTask(executor) { task in
+            switch task.state {
+            case .Success(let result):
+                return Task(result)
+            case .Cancelled:
+                return Task.cancelledTask()
+            case .Error(let error):
+                return try continuation(error)
             default:
                 abort() // This should never happen.
             }

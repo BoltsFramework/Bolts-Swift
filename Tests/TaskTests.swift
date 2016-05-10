@@ -342,7 +342,45 @@ class TaskTests: XCTestCase {
         waitForTestExpectations()
     }
 
-    // MARK: WhenAll
+    //--------------------------------------
+    // MARK: - continueOnError
+    //--------------------------------------
+
+    func testContinueOnGenericErrorRecovers() {
+        let error = NSError(domain: "com.bolts", code: 1, userInfo: nil)
+        let expectation = expectationWithDescription(currentTestName)
+        let initialTask = Task<String?>(error: error)
+
+        let continuationTask = initialTask.continueOnErrorWith { taskError -> String? in
+            XCTAssertEqual(taskError as NSError, error)
+            return self.name
+        }
+        continuationTask.continueOnSuccessWith {
+            XCTAssertEqual($0, self.name)
+            expectation.fulfill()
+        }
+        waitForTestExpectations()
+    }
+
+    func testContinueOnSpecificErrorRecovers() {
+        let error = NSError(domain: "com.bolts", code: 1, userInfo: nil)
+        let expectation = expectationWithDescription(currentTestName)
+        let initialTask = Task<String?>(error: error)
+
+        let continuationTask = initialTask.continueOnErrorWith { (taskError: NSError) -> String? in
+            XCTAssertEqual(taskError, error)
+            return self.name
+        }
+        continuationTask.continueOnSuccessWith {
+            XCTAssertEqual($0, self.name)
+            expectation.fulfill()
+        }
+        waitForTestExpectations()
+    }
+
+    //--------------------------------------
+    // MARK: - WhenAll
+    //--------------------------------------
 
     func testWhenAllTasksEmptyArray() {
         let tasks: [Task<Int>] = []
