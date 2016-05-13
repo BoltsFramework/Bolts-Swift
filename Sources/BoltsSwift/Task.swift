@@ -385,6 +385,7 @@ public final class Task<TResult> {
                 stateChanged = true
                 self._state = state
                 continuations = self._continuations
+                self._continuations.removeAll()
             default:
                 break
             }
