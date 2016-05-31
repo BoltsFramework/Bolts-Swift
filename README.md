@@ -41,15 +41,17 @@ In addition to being able to have different states `completed`/`faulted`/`cancel
  github "BoltsFramework/Bolts-Swift"
  ```
  Run `carthage update`, and you should now have the latest version of Bolts in your Carthage folder.
- 
-- **Pre-built binaries**
-
- Head on over to the [releases][releases] page, and download the latest build.
- And you're off! Take a look at the result of the documentation on this readme and start building.
 
 - **Using Bolts as a sub-project**
 
   You can also include parse as a subproject inside of your application if you'd prefer, although we do not recommend this, as it will increase your indexing time significantly. To do so, just drag and drop the `BoltsSwift.xcodeproj` file into your workspace.
+  
+- **Import Bolts**
+
+  Now that you have the framework linked to your application - add the folowing line in every `.swift` that you want to use Bolts from:
+  ```
+  import BoltsSwift
+  ```
 
 ## Chaining Tasks
 
