@@ -51,7 +51,7 @@ public final class Task<TResult> {
     public typealias Continuation = () -> Void
 
     private let synchronizationQueue = dispatch_queue_create("com.bolts.task", DISPATCH_QUEUE_CONCURRENT)
-    private let completedCondition = NSCondition()
+    private var _completedCondition: NSCondition?
 
     private var _state: TaskState<TResult> = .Pending()
     private var _continuations: [Continuation] = Array()
@@ -206,14 +206,30 @@ public final class Task<TResult> {
         if NSThread.isMainThread() {
             debugPrint("Warning: A long-running operation is being executed on the main thread waiting on \(self).")
         }
-        if completed {
+
+        var conditon: NSCondition?
+        dispatch_barrier_sync(synchronizationQueue) {
+            if case .Pending = self._state {
+                conditon = self._completedCondition ?? NSCondition()
+                self._completedCondition = conditon
+            }
+        }
+
+        guard let condition = conditon else {
+            // Task should have been completed
+            precondition(completed)
             return
         }
-        completedCondition.lock()
+
+        condition.lock()
         while !completed {
-            completedCondition.wait()
+            condition.wait()
         }
-        completedCondition.unlock()
+        condition.unlock()
+
+        dispatch_barrier_sync(synchronizationQueue) {
+            self._completedCondition = nil
+        }
     }
 
     // MARK: State Change
@@ -222,21 +238,23 @@ public final class Task<TResult> {
         var stateChanged = false
 
         var continuations: [Continuation]?
+        var completedCondition: NSCondition?
         dispatch_barrier_sync(synchronizationQueue) {
             switch self._state {
             case .Pending():
                 stateChanged = true
                 self._state = state
                 continuations = self._continuations
+                completedCondition = self._completedCondition
                 self._continuations.removeAll()
             default:
                 break
             }
         }
         if stateChanged {
-            completedCondition.lock()
-            completedCondition.broadcast()
-            completedCondition.unlock()
+            completedCondition?.lock()
+            completedCondition?.broadcast()
+            completedCondition?.unlock()
 
             for continuation in continuations! {
                 continuation()
