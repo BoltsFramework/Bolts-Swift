@@ -60,7 +60,7 @@ public final class Task<TResult> {
 
     init() {}
 
-    private init(state: TaskState<TResult>) {
+    init(state: TaskState<TResult>) {
         _state = state
     }
 
@@ -92,7 +92,7 @@ public final class Task<TResult> {
         return self.init(state: .Cancelled)
     }
 
-    private class func emptyTask() -> Task<Void> {
+    class func emptyTask() -> Task<Void> {
         return Task<Void>(state: .Success())
     }
 
@@ -140,153 +140,6 @@ public final class Task<TResult> {
         return emptyTask().continueWithTask(executor) { _ in
             return try closure()
         }
-    }
-
-    // MARK: Continuations
-
-    /**
-     Enqueues a given closure to be run once this task is complete.
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns the result of the task.
-
-     - returns: A task that will be completed with a result from a given closure.
-     */
-    public func continueWith<S>(executor: Executor = .Default, continuation: (Task throws -> S)) -> Task<S> {
-        return continueWithTask(executor) { task in
-            let state = TaskState.fromClosure({
-                try continuation(task)
-            })
-            return Task<S>(state: state)
-        }
-    }
-
-    /**
-     Enqueues a given closure to be run once this task is complete.
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
-     - returns: A task that will be completed when a task returned from a closure is completed.
-     */
-    public func continueWithTask<S>(executor: Executor = .Default, continuation: (Task throws -> Task<S>)) -> Task<S> {
-        return continueWithTask(executor, options: .RunAlways, continuation: continuation)
-    }
-
-    /**
-     Enqueues a given closure to be run once this task completes with success (has intended result).
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
-     - returns: A task that will be completed when a task returned from a closure is completed.
-     */
-    public func continueOnSuccessWith<S>(executor: Executor = .Default, continuation: (TResult throws -> S)) -> Task<S> {
-        return continueOnSuccessWithTask(executor) { taskResult in
-            let state = TaskState.fromClosure({
-                try continuation(taskResult)
-            })
-            return Task<S>(state: state)
-        }
-    }
-
-    /**
-     Enqueues a given closure to be run once this task completes with success (has intended result).
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
-     - returns: A task that will be completed when a task returned from a closure is completed.
-     */
-    public func continueOnSuccessWithTask<S>(executor: Executor = .Default, continuation: (TResult throws -> Task<S>)) -> Task<S> {
-        return continueWithTask(executor, options: .RunOnSuccess) { task in
-            return try continuation(task.result!)
-        }
-    }
-
-    /**
-     Enqueues a given closure to be run once this task completes with error.
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
-     - returns: A task that will be completed when a task returned from a closure is completed.
-     */
-    public func continueOnErrorWith<E: ErrorType>(executor: Executor = .Default, continuation: (E throws -> TResult)) -> Task {
-        return continueOnErrorWithTask(executor) { (error: E) in
-            let state = TaskState.fromClosure({
-                try continuation(error)
-            })
-            return Task(state: state)
-        }
-    }
-
-    /**
-     Enqueues a given closure to be run once this task completes with error.
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
-     - returns: A task that will be completed when a task returned from a closure is completed.
-     */
-    public func continueOnErrorWith(executor: Executor = .Default, continuation: (ErrorType throws -> TResult)) -> Task {
-        return continueOnErrorWithTask(executor) { (error: ErrorType) in
-            let state = TaskState.fromClosure({
-                try continuation(error)
-            })
-            return Task(state: state)
-        }
-    }
-
-    /**
-     Enqueues a given closure to be run once this task completes with error.
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
-     - returns: A task that will be completed when a task returned from a closure is completed.
-     */
-    public func continueOnErrorWithTask<E: ErrorType>(executor: Executor = .Default, continuation: (E throws -> Task)) -> Task {
-        return continueOnErrorWithTask(executor) { (error: ErrorType) in
-            if let error = error as? E {
-                return try continuation(error)
-            }
-            return Task(state: .Error(error))
-        }
-    }
-
-    /**
-     Enqueues a given closure to be run once this task completes with error.
-
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
-     - returns: A task that will be completed when a task returned from a closure is completed.
-     */
-    public func continueOnErrorWithTask(executor: Executor = .Default, continuation: (ErrorType throws -> Task)) -> Task {
-        return continueWithTask(executor, options: .RunOnError) { task in
-            return try continuation(task.error!)
-        }
-    }
-
-    /**
-     Waits until this operation is completed.
-
-     This method is inefficient and consumes a thread resource while it's running.
-     It should be avoided. This method logs a warning message if it is used on the main thread.
-     */
-    public func waitUntilCompleted() {
-        if NSThread.isMainThread() {
-            debugPrint("Warning: A long-running operation is being executed on the main thread waiting on \(self).")
-        }
-        if completed {
-            return
-        }
-        completedCondition.lock()
-        while !completed {
-            completedCondition.wait()
-        }
-        completedCondition.unlock()
     }
 
     // MARK: State Accessors
@@ -343,6 +196,26 @@ public final class Task<TResult> {
         return nil
     }
 
+    /**
+     Waits until this operation is completed.
+
+     This method is inefficient and consumes a thread resource while it's running.
+     It should be avoided. This method logs a warning message if it is used on the main thread.
+     */
+    public func waitUntilCompleted() {
+        if NSThread.isMainThread() {
+            debugPrint("Warning: A long-running operation is being executed on the main thread waiting on \(self).")
+        }
+        if completed {
+            return
+        }
+        completedCondition.lock()
+        while !completed {
+            completedCondition.wait()
+        }
+        completedCondition.unlock()
+    }
+
     // MARK: State Change
 
     func trySetState(state: TaskState<TResult>) -> Bool {
@@ -373,9 +246,9 @@ public final class Task<TResult> {
         return stateChanged
     }
 
-    // MARK: Private
+    // MARK: Internal
 
-    private func appendOrRunContinuation(continuation: Continuation) {
+    func appendOrRunContinuation(continuation: Continuation) {
         var runContinuation = false
         dispatch_barrier_sync(synchronizationQueue) {
             switch self._state {
@@ -391,224 +264,12 @@ public final class Task<TResult> {
         }
     }
 
-    private var state: TaskState<TResult> {
+    var state: TaskState<TResult> {
         var value: TaskState<TResult>?
         dispatch_sync(synchronizationQueue) {
             value = self._state
         }
         return value!
-    }
-
-    private func continueWithTask<S>(executor: Executor = .Default, options: TaskContinuationOptions, continuation: (Task throws -> Task<S>)) -> Task<S> {
-        let taskCompletionSource = TaskCompletionSource<S>()
-        let wrapperContinuation = {
-            switch self.state {
-            case .Success where options.contains(.RunOnSuccess): fallthrough
-            case .Error where options.contains(.RunOnError): fallthrough
-            case .Cancelled where options.contains(.RunOnCancelled):
-                executor.execute {
-                    let wrappedState = TaskState<Task<S>>.fromClosure {
-                        try continuation(self)
-                    }
-                    switch wrappedState {
-                    case .Success(let nextTask):
-                        switch nextTask.state {
-                        case .Pending:
-                            nextTask.continueWith { nextTask in
-                                taskCompletionSource.setState(nextTask.state)
-                            }
-                        default:
-                            taskCompletionSource.setState(nextTask.state)
-                        }
-                    case .Error(let error):
-                        taskCompletionSource.setError(error)
-                    case .Cancelled:
-                        taskCompletionSource.cancel()
-                    default: abort() // This should never happen.
-                    }
-                }
-
-            case .Success(let result as S):
-                // This is for continueOnErrorWith - the type of the result doesn't change, so we can pass it through
-                taskCompletionSource.setResult(result)
-
-            case .Error(let error):
-                taskCompletionSource.setError(error)
-
-            case .Cancelled:
-                taskCompletionSource.cancel()
-
-            default:
-                fatalError("Task was in an invalid state \(self.state)")
-            }
-        }
-        appendOrRunContinuation(wrapperContinuation)
-        return taskCompletionSource.task
-    }
-}
-
-//--------------------------------------
-// MARK: - Task with Delay
-//--------------------------------------
-
-extension Task {
-    /**
-     Creates a task that will complete after the given delay.
-
-     - parameter delay: The delay for the task to completes.
-
-     - returns: A task that will complete after the given delay.
-     */
-    public class func withDelay(delay: NSTimeInterval) -> Task<Void> {
-        let taskCompletionSource = TaskCompletionSource<Void>()
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * NSTimeInterval(NSEC_PER_SEC)))
-        dispatch_after(time, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            taskCompletionSource.trySetResult()
-        }
-        return taskCompletionSource.task
-    }
-}
-
-//--------------------------------------
-// MARK: - WhenAll
-//--------------------------------------
-
-extension Task {
-
-    /**
-     Creates a task that will be completed after all of the input tasks have completed.
-
-     - parameter tasks: Array tasks to wait on for completion.
-
-     - returns: A new task that will complete after all `tasks` are completed.
-     */
-    public class func whenAll(tasks: [Task]) -> Task<Void> {
-        if tasks.isEmpty {
-            return Task.emptyTask()
-        }
-
-        var tasksCount: Int32 = Int32(tasks.count)
-        var cancelledCount: Int32 = 0
-        var errorCount: Int32 = 0
-
-        let tcs = TaskCompletionSource<Void>()
-        tasks.forEach {
-            $0.continueWith { task -> Void in
-                if task.cancelled {
-                    OSAtomicIncrement32(&cancelledCount)
-                } else if task.faulted {
-                    OSAtomicIncrement32(&errorCount)
-                }
-
-                if OSAtomicDecrement32(&tasksCount) == 0 {
-                    if cancelledCount > 0 {
-                        tcs.cancel()
-                    } else if errorCount > 0 {
-                        tcs.setError(AggregateError(errors: tasks.flatMap({ $0.error })))
-                    } else {
-                        tcs.setResult()
-                    }
-                }
-            }
-        }
-        return tcs.task
-    }
-
-    /**
-     Creates a task that will be completed after all of the input tasks have completed.
-
-     - parameter tasks: Zero or more tasks to wait on for completion.
-
-     - returns: A new task that will complete after all `tasks` are completed.
-     */
-    public class func whenAll(tasks: Task...) -> Task<Void> {
-        return whenAll(tasks)
-    }
-
-    /**
-     Creates a task that will be completed after all of the input tasks have completed.
-
-     - parameter tasks: Array of tasks to wait on for completion.
-
-     - returns: A new task that will complete after all `tasks` are completed.
-     The result of the task is going an array of results of all tasks in the same order as they were provided.
-     */
-    public class func whenAllResult(tasks: [Task]) -> Task<[TResult]> {
-        return whenAll(tasks).continueOnSuccessWithTask { task -> Task<[TResult]> in
-            let results: [TResult] = tasks.map { task in
-                guard let result = task.result else {
-                    // This should never happen.
-                    // If the task succeeded - there is no way result is `nil`, even in case TResult is optional,
-                    // because `task.result` would have a type of `Result??`, and we unwrap only one optional here.
-                    // If a task was cancelled, we should have never have gotten past 'continueOnSuccess'.
-                    // If a task errored, we should have returned a 'AggregateError' and never gotten past 'continueOnSuccess'.
-                    // If a task was pending, then something went horribly wrong.
-                    fatalError("Task is in unknown state \(task.state).")
-                }
-                return result
-            }
-            return Task<[TResult]>(results)
-        }
-    }
-
-    /**
-     Creates a task that will be completed after all of the input tasks have completed.
-
-     - parameter tasks: Zero or more tasks to wait on for completion.
-
-     - returns: A new task that will complete after all `tasks` are completed.
-     The result of the task is going an array of results of all tasks in the same order as they were provided.
-     */
-    public class func whenAllResult(tasks: Task...) -> Task<[TResult]> {
-        return whenAllResult(tasks)
-    }
-}
-
-//--------------------------------------
-// MARK: - WhenAny
-//--------------------------------------
-
-extension Task {
-
-    /**
-     Creates a task that will complete when any of the input tasks have completed.
-
-     The returned task will complete when any of the supplied tasks have completed.
-     This is true even if the first task to complete ended in the canceled or faulted state.
-
-     - parameter tasks: Array of tasks to wait on for completion.
-
-     - returns: A new task that will complete when any of the `tasks` are completed.
-     */
-    public class func whenAny(tasks: [Task]) -> Task<Void> {
-        if tasks.isEmpty {
-            return Task.emptyTask()
-        }
-        let taskCompletionSource = TaskCompletionSource<Void>()
-        for task in tasks {
-            // Do not continue anything if we completed the task, because we fulfilled our job here.
-            if taskCompletionSource.task.completed {
-                break
-            }
-            task.continueWith { task in
-                taskCompletionSource.trySetResult()
-            }
-        }
-        return taskCompletionSource.task
-    }
-
-    /**
-     Creates a task that will complete when any of the input tasks have completed.
-
-     The returned task will complete when any of the supplied tasks have completed.
-     This is true even if the first task to complete ended in the canceled or faulted state.
-
-     - parameter tasks: Zeror or more tasks to wait on for completion.
-
-     - returns: A new task that will complete when any of the `tasks` are completed.
-     */
-    public class func whenAny(tasks: Task...) -> Task<Void> {
-        return whenAny(tasks)
     }
 }
 
