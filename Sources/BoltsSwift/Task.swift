@@ -10,7 +10,6 @@
 import Foundation
 
 enum TaskState<TResult> {
-    case Pending()
     case Success(TResult)
     case Error(ErrorType)
     case Cancelled
@@ -53,7 +52,7 @@ public final class Task<TResult> {
     private let synchronizationQueue = dispatch_queue_create("com.bolts.task", DISPATCH_QUEUE_CONCURRENT)
     private var _completedCondition: NSCondition?
 
-    private var _state: TaskState<TResult> = .Pending()
+    private var _state: TaskState<TResult>?
     private var _continuations: [Continuation] = Array()
 
     // MARK: Initializers
@@ -108,7 +107,7 @@ public final class Task<TResult> {
      The returned task will complete when the closure completes.
      */
     public convenience init(_ executor: Executor = .Default, closure: (Void throws -> TResult)) {
-        self.init(state: .Pending())
+        self.init()
         executor.execute {
             self.trySetState(TaskState.fromClosure(closure))
         }
@@ -146,52 +145,37 @@ public final class Task<TResult> {
 
     ///  Whether this task is completed. A completed task can also be faulted or cancelled.
     public var completed: Bool {
-        switch state {
-        case .Pending:
-            return false
-        default:
-            return true
-        }
+        return state != nil
     }
 
     ///  Whether this task has completed due to an error or exception. A `faulted` task is also completed.
     public var faulted: Bool {
-        switch state {
-        case .Error:
+        if case .Error? = state {
             return true
-        default:
-            return false
         }
+        return false
     }
 
     /// Whether this task has been cancelled. A `cancelled` task is also completed.
     public var cancelled: Bool {
-        switch state {
-        case .Cancelled:
+        if case .Cancelled?  = state {
             return true
-        default:
-            return false
         }
+        return false
     }
 
     /// The result of a successful task. Won't be set until the task completes with a `result`.
     public var result: TResult? {
-        switch state {
-        case .Success(let result):
+        if case let .Success(result)? = state {
             return result
-        default:
-            break
         }
         return nil
     }
 
     /// The error of a errored task. Won't be set until the task completes with `error`.
     public var error: ErrorType? {
-        switch state {
-        case .Error(let error):
+        if case let .Error(error)? = state {
             return error
-        default:
-            break
         }
         return nil
     }
@@ -226,15 +210,12 @@ public final class Task<TResult> {
         var continuations: [Continuation]?
         var completedCondition: NSCondition?
         dispatch_barrier_sync(synchronizationQueue) {
-            switch self._state {
-            case .Pending():
+            if self._state == nil {
                 stateChanged = true
                 self._state = state
                 continuations = self._continuations
                 completedCondition = self._completedCondition
                 self._continuations.removeAll()
-            default:
-                break
             }
         }
         if stateChanged {
@@ -253,27 +234,24 @@ public final class Task<TResult> {
     // MARK: Internal
 
     func appendOrRunContinuation(continuation: Continuation) {
-        var runContinuation = false
+        var runContinuation = true
         dispatch_barrier_sync(synchronizationQueue) {
-            switch self._state {
-            case .Pending:
+            if self._state == nil {
                 self._continuations.append(continuation)
-            default:
-                runContinuation = true
+                runContinuation = false
             }
-
         }
         if runContinuation {
             continuation()
         }
     }
 
-    var state: TaskState<TResult> {
+    var state: TaskState<TResult>? {
         var value: TaskState<TResult>?
         dispatch_sync(synchronizationQueue) {
             value = self._state
         }
-        return value!
+        return value
     }
 
     private var completedCondition: NSCondition? {

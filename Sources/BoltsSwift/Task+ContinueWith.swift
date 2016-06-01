@@ -24,7 +24,11 @@ extension Task {
     private func continueWithTask<S>(executor: Executor, options: TaskContinuationOptions, continuation: (Task throws -> Task<S>)) -> Task<S> {
         let taskCompletionSource = TaskCompletionSource<S>()
         let wrapperContinuation = {
-            switch self.state {
+            guard let state = self.state else {
+                preconditionFailure("Continuation was invoked while task was in pending state!")
+            }
+
+            switch state {
             case .Success where options.contains(.RunOnSuccess): fallthrough
             case .Error where options.contains(.RunOnError): fallthrough
             case .Cancelled where options.contains(.RunOnCancelled):
@@ -34,19 +38,18 @@ extension Task {
                     }
                     switch wrappedState {
                     case .Success(let nextTask):
-                        switch nextTask.state {
-                        case .Pending:
+                        guard let state = nextTask.state else {
                             nextTask.continueWith { nextTask in
-                                taskCompletionSource.setState(nextTask.state)
+                                taskCompletionSource.setState(nextTask.state!)
                             }
-                        default:
-                            taskCompletionSource.setState(nextTask.state)
+                            break
                         }
+
+                        taskCompletionSource.setState(state)
                     case .Error(let error):
                         taskCompletionSource.setError(error)
                     case .Cancelled:
                         taskCompletionSource.cancel()
-                    default: abort() // This should never happen.
                     }
                 }
 
@@ -61,7 +64,7 @@ extension Task {
                 taskCompletionSource.cancel()
 
             default:
-                fatalError("Task was in an invalid state \(self.state)")
+                fatalError("Task was in an invalid state \(state)")
             }
         }
         appendOrRunContinuation(wrapperContinuation)
