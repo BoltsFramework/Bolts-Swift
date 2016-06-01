@@ -51,7 +51,7 @@ public final class Task<TResult> {
     public typealias Continuation = () -> Void
 
     private let synchronizationQueue = dispatch_queue_create("com.bolts.task", DISPATCH_QUEUE_CONCURRENT)
-    private let completedCondition = NSCondition()
+    private var _completedCondition: NSCondition?
 
     private var _state: TaskState<TResult> = .Pending()
     private var _continuations: [Continuation] = Array()
@@ -209,11 +209,13 @@ public final class Task<TResult> {
         if completed {
             return
         }
-        completedCondition.lock()
+        let condition = completedCondition
+        condition?.lock()
         while !completed {
-            completedCondition.wait()
+            condition?.wait()
         }
-        completedCondition.unlock()
+        condition?.unlock()
+        completedCondition = nil
     }
 
     // MARK: State Change
@@ -222,21 +224,23 @@ public final class Task<TResult> {
         var stateChanged = false
 
         var continuations: [Continuation]?
+        var completedCondition: NSCondition?
         dispatch_barrier_sync(synchronizationQueue) {
             switch self._state {
             case .Pending():
                 stateChanged = true
                 self._state = state
                 continuations = self._continuations
+                completedCondition = self._completedCondition
                 self._continuations.removeAll()
             default:
                 break
             }
         }
         if stateChanged {
-            completedCondition.lock()
-            completedCondition.broadcast()
-            completedCondition.unlock()
+            completedCondition?.lock()
+            completedCondition?.broadcast()
+            completedCondition?.unlock()
 
             for continuation in continuations! {
                 continuation()
@@ -270,6 +274,24 @@ public final class Task<TResult> {
             value = self._state
         }
         return value!
+    }
+
+    private var completedCondition: NSCondition? {
+        get {
+            var value: NSCondition?
+            dispatch_barrier_sync(synchronizationQueue) {
+                if self._completedCondition == nil {
+                    self._completedCondition = NSCondition()
+                }
+                value = self._completedCondition
+            }
+            return value
+        }
+        set {
+            dispatch_barrier_sync(synchronizationQueue) {
+                self.completedCondition = newValue
+            }
+        }
     }
 }
 
