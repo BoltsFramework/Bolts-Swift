@@ -531,7 +531,8 @@ class TaskTests: XCTestCase {
         let executor = Executor.Queue(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0))
 
         tasks.append(Task<Void>.withDelay(0.2).continueWith { task in
-            return Int(rand())
+            // Use max value of Int32, so we can use the same code across both 32 and 64 bit archs.
+            return Int(arc4random_uniform(UInt32(Int32.max)))
         })
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
