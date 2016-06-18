@@ -36,7 +36,7 @@ extension Task {
                 break
             }
             task.continueWith { task in
-                taskCompletionSource.trySetResult()
+                taskCompletionSource.trySet(result: ())
             }
         }
         return taskCompletionSource.task

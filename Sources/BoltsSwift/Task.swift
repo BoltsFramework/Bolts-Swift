@@ -110,7 +110,7 @@ public final class Task<TResult> {
     public convenience init(_ executor: Executor = .Default, closure: (Void throws -> TResult)) {
         self.init(state: .Pending())
         executor.execute {
-            self.trySetState(TaskState.fromClosure(closure))
+            self.trySet(state: TaskState.fromClosure(closure))
         }
     }
 
@@ -234,7 +234,7 @@ public final class Task<TResult> {
 
     // MARK: State Change
 
-    func trySetState(state: TaskState<TResult>) -> Bool {
+    func trySet(state state: TaskState<TResult>) -> Bool {
         var stateChanged = false
 
         var continuations: [Continuation]?

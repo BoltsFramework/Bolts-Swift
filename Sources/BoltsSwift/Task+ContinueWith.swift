@@ -45,7 +45,7 @@ extension Task {
                             taskCompletionSource.setState(nextTask.state)
                         }
                     case .Error(let error):
-                        taskCompletionSource.setError(error)
+                        taskCompletionSource.set(error: error)
                     case .Cancelled:
                         taskCompletionSource.cancel()
                     default: abort() // This should never happen.
@@ -54,10 +54,10 @@ extension Task {
 
             case .Success(let result as S):
                 // This is for continueOnErrorWith - the type of the result doesn't change, so we can pass it through
-                taskCompletionSource.setResult(result)
+                taskCompletionSource.set(result: result)
 
             case .Error(let error):
-                taskCompletionSource.setError(error)
+                taskCompletionSource.set(error: error)
 
             case .Cancelled:
                 taskCompletionSource.cancel()
