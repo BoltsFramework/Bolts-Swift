@@ -13,6 +13,8 @@
 PRODUCT_NAME = BoltsSwiftTests
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.macos.tests
 
+MACOSX_DEPLOYMENT_TARGET = 10.10
+
 SWIFT_VERSION = 2.3
 
 INFOPLIST_FILE = $(SRCROOT)/Tests/Info.plist
