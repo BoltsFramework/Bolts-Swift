@@ -1,5 +1,21 @@
 # Change Log
 
+## [1.3.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.3.0) (2016-09-19)
+[Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.2.0...1.3.0)
+
+**Implemented enhancements:**
+
+- Add Swift 3.0 support. [\#40](https://github.com/BoltsFramework/Bolts-Swift/pull/40) ([nlutsenko](https://github.com/nlutsenko))
+
+**Closed issues:**
+
+- Swift 3.0 Support [\#33](https://github.com/BoltsFramework/Bolts-Swift/issues/33)
+
+**Merged pull requests:**
+
+- Set lowest deployment macOS target to 10.10. [\#41](https://github.com/BoltsFramework/Bolts-Swift/pull/41) ([nlutsenko](https://github.com/nlutsenko))
+- Fix README for TaskCompletionSource.cancel\(\) [\#37](https://github.com/BoltsFramework/Bolts-Swift/pull/37) ([ceyhuno](https://github.com/ceyhuno))
+
 ## [1.2.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.2.0) (2016-07-25)
 [Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.1.0...1.2.0)
 
@@ -17,11 +33,12 @@
 
 **Merged pull requests:**
 
+- Refactor continuation to be better, faster, stronger. [\#20](https://github.com/BoltsFramework/Bolts-Swift/pull/20) ([richardjrossiii](https://github.com/richardjrossiii))
+- Bolts 1.2.0 🔩 [\#34](https://github.com/BoltsFramework/Bolts-Swift/pull/34) ([nlutsenko](https://github.com/nlutsenko))
 - Migrate all targets to shared configurations from xctoolchain. [\#32](https://github.com/BoltsFramework/Bolts-Swift/pull/32) ([nlutsenko](https://github.com/nlutsenko))
 - Add swiftlint to Travis-CI. [\#29](https://github.com/BoltsFramework/Bolts-Swift/pull/29) ([nlutsenko](https://github.com/nlutsenko))
 - Split Task into multiple files. [\#24](https://github.com/BoltsFramework/Bolts-Swift/pull/24) ([richardjrossiii](https://github.com/richardjrossiii))
 - Update installation instructions in README. [\#22](https://github.com/BoltsFramework/Bolts-Swift/pull/22) ([nlutsenko](https://github.com/nlutsenko))
-- Refactor continuation to be better, faster, stronger. [\#20](https://github.com/BoltsFramework/Bolts-Swift/pull/20) ([richardjrossiii](https://github.com/richardjrossiii))
 
 ## [1.1.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.1.0) (2016-05-04)
 [Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.0.1...1.1.0)
