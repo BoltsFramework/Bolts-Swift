@@ -18,11 +18,11 @@ import Foundation
 ///
 ///     func dataFromPath(path: String) -> Task<NSData> {
 ///       let tcs = TaskCompletionSource<NSData>()
-///       dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+///       DispatchQueue.global(qos: .default).async {
 ///         if let data = NSData(contentsOfFile: path) {
-///           tcs.setResult(data)
+///           tcs.set(result: data)
 ///         } else {
-///           tcs.setError(NSError(domain: "com.example", code: 0, userInfo: nil))
+///           tcs.set(error: NSError(domain: "com.example", code: 0, userInfo: nil))
 ///         }
 ///       }
 ///       return tcs.task
