@@ -208,12 +208,12 @@ public final class Task<TResult> {
         }
 
         var conditon: NSCondition?
-        synchronizationQueue.sync(flags: .barrier, execute: {
+        sync {
             if case .pending = self._state {
                 conditon = self._completedCondition ?? NSCondition()
                 self._completedCondition = conditon
             }
-        })
+        }
 
         guard let condition = conditon else {
             // Task should have been completed
@@ -227,9 +227,9 @@ public final class Task<TResult> {
         }
         condition.unlock()
 
-        synchronizationQueue.sync(flags: .barrier, execute: {
+        sync {
             self._completedCondition = nil
-        })
+        }
     }
 
     // MARK: State Change
@@ -240,7 +240,7 @@ public final class Task<TResult> {
 
         var continuations: [Continuation]?
         var completedCondition: NSCondition?
-        synchronizationQueue.sync(flags: .barrier, execute: {
+        sync {
             switch self._state {
             case .pending():
                 stateChanged = true
@@ -251,7 +251,8 @@ public final class Task<TResult> {
             default:
                 break
             }
-        })
+        }
+        
         if stateChanged {
             completedCondition?.lock()
             completedCondition?.broadcast()
@@ -269,17 +270,23 @@ public final class Task<TResult> {
 
     func appendOrRunContinuation(_ continuation: @escaping Continuation) {
         var runContinuation = false
-        synchronizationQueue.sync(flags: .barrier, execute: {
+        
+        sync {
             switch self._state {
             case .pending:
                 self._continuations.append(continuation)
             default:
                 runContinuation = true
             }
-        })
+        }
+        
         if runContinuation {
             continuation()
         }
+    }
+    
+    func sync(execute: () -> Void) {
+        synchronizationQueue.sync(flags: .barrier, execute: execute)
     }
 
     var state: TaskState<TResult> {
