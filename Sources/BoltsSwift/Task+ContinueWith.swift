@@ -9,6 +9,83 @@
 
 import Foundation
 
+open class CancellationTokenSource {
+    
+    public init() {
+        
+    }
+    
+    open var token: CancellationToken = CancellationToken()
+    
+    open func cancel() {
+        if !token.isCancellationRequested {
+            token.isCancellationRequested = true
+        }
+    }
+}
+
+open class CancellationToken {
+    
+    private var _cancellationRequested = false
+    
+    public var isCancellationRequested: Bool {
+        get {
+            var result = false
+            synchronizationQueue.sync {
+                result = _cancellationRequested
+            }
+            return result
+        } set {
+            synchronizationQueue.sync {
+                _cancellationRequested = newValue
+            }
+        }
+    }
+    
+    fileprivate let synchronizationQueue = DispatchQueue(label: "com.bolts.task", attributes: DispatchQueue.Attributes.concurrent)
+}
+
+//--------------------------------------
+// MARK: - ContinueWith + cancellationToken
+//--------------------------------------
+
+public extension Task {
+    
+    @discardableResult
+    public func continueWith<S>(_ executor: Executor = .default, cancellationToken: CancellationToken, continuation: @escaping ((Task<TResult>) throws -> S)) -> Task<S> {
+        
+        return self.continueWithTask(executor, cancellationToken: cancellationToken, continuation: { (task) -> Task<S> in
+            let state = TaskState.fromClosure({
+                try continuation(task)
+            })
+            return Task<S>(state: state)
+        })
+    }
+    
+    @discardableResult
+    public func continueWithTask<S>(_ executor: Executor = .default, cancellationToken: CancellationToken, continuation: @escaping ((Task<TResult>) throws -> Task<S>)) -> Task<S> {
+        return continueWithTask(executor, cancellationToken: cancellationToken, options: .RunAlways, continuation: continuation)
+    }
+    
+    @discardableResult
+    public func continueOnSuccessWith<S>(_ executor: Executor = .default, cancellationToken: CancellationToken, continuation: @escaping ((TResult) throws -> S)) -> Task<S> {
+        return continueOnSuccessWithTask(executor, cancellationToken: cancellationToken, continuation: { (taskResult) -> Task<S> in
+            let state = TaskState.fromClosure({
+                try continuation(taskResult)
+            })
+            return Task<S>(state: state)
+        })
+    }
+    
+    @discardableResult
+    public func continueOnSuccessWithTask<S>(_ executor: Executor = .default, cancellationToken: CancellationToken, continuation: @escaping ((TResult) throws -> Task<S>)) -> Task<S> {
+        return continueWithTask(executor, cancellationToken: cancellationToken, options: .RunOnSuccess) { task in
+            return try continuation(task.result!)
+        }
+    }
+    
+}
+
 //--------------------------------------
 // MARK: - ContinueWith
 //--------------------------------------
@@ -17,56 +94,70 @@ extension Task {
     /**
      Internal continueWithTask. This is the method that all other continuations must go through.
 
-     - parameter executor:     The executor to invoke the closure on.
-     - parameter options:      The options to run the closure with
-     - parameter continuation: The closure to execute.
+     - parameter executor:              The executor to invoke the closure on.
+     - parameter cancellationToken:     The cancellation token to cancel task later.
+     - parameter options:               The options to run the closure with
+     - parameter continuation:          The closure to execute.
 
      - returns: The task resulting from the continuation
      */
     fileprivate func continueWithTask<S>(_ executor: Executor,
-                                  options: TaskContinuationOptions,
-                                  continuation: @escaping ((Task) throws -> Task<S>)
+                                      cancellationToken: CancellationToken? = nil,
+                                      options: TaskContinuationOptions,
+                                      continuation: @escaping ((Task) throws -> Task<S>)
         ) -> Task<S> {
         let taskCompletionSource = TaskCompletionSource<S>()
         let wrapperContinuation = {
-            switch self.state {
-            case .success where options.contains(.RunOnSuccess): fallthrough
-            case .error where options.contains(.RunOnError): fallthrough
-            case .cancelled where options.contains(.RunOnCancelled):
-                executor.execute {
-                    let wrappedState = TaskState<Task<S>>.fromClosure {
-                        try continuation(self)
-                    }
-                    switch wrappedState {
-                    case .success(let nextTask):
-                        switch nextTask.state {
-                        case .pending:
-                            nextTask.continueWith { nextTask in
-                                taskCompletionSource.setState(nextTask.state)
-                            }
-                        default:
-                            taskCompletionSource.setState(nextTask.state)
-                        }
-                    case .error(let error):
-                        taskCompletionSource.set(error: error)
-                    case .cancelled:
-                        taskCompletionSource.cancel()
-                    default: abort() // This should never happen.
-                    }
-                }
-
-            case .success(let result as S):
-                // This is for continueOnErrorWith - the type of the result doesn't change, so we can pass it through
-                taskCompletionSource.set(result: result)
-
-            case .error(let error):
-                taskCompletionSource.set(error: error)
-
-            case .cancelled:
+            if cancellationToken?.isCancellationRequested == true {
                 taskCompletionSource.cancel()
-
-            default:
-                fatalError("Task was in an invalid state \(self.state)")
+            } else {
+                switch self.state {
+                case .success where options.contains(.RunOnSuccess): fallthrough
+                case .error where options.contains(.RunOnError): fallthrough
+                case .cancelled where options.contains(.RunOnCancelled):
+                    executor.execute {
+                        let wrappedState = TaskState<Task<S>>.fromClosure {
+                            try continuation(self)
+                        }
+                        
+                        if cancellationToken?.isCancellationRequested == true {
+                            taskCompletionSource.cancel()
+                        } else {
+                            
+                            switch wrappedState {
+                            case .success(let nextTask):
+                                switch nextTask.state {
+                                case .pending:
+                                    nextTask.continueWith { nextTask in
+                                        taskCompletionSource.setState(nextTask.state)
+                                    }
+                                default:
+                                    taskCompletionSource.setState(nextTask.state)
+                                }
+                            case .error(let error):
+                                taskCompletionSource.set(error: error)
+                            case .cancelled:
+                                taskCompletionSource.cancel()
+                            default: abort() // This should never happen.
+                            }
+                        }
+                        
+                    }
+                    
+                    
+                case .success(let result as S):
+                    // This is for continueOnErrorWith - the type of the result doesn't change, so we can pass it through
+                    taskCompletionSource.set(result: result)
+                    
+                case .error(let error):
+                    taskCompletionSource.set(error: error)
+                    
+                case .cancelled:
+                    taskCompletionSource.cancel()
+                    
+                default:
+                    fatalError("Task was in an invalid state \(self.state)")
+                }
             }
         }
         appendOrRunContinuation(wrapperContinuation)
