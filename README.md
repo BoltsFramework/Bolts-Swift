@@ -133,7 +133,7 @@ Both `continueWith()` and `continueWithTask()` functions accept an optional exec
 The default executor will dispatch to global dispatch queue, but you can provide your own executor to schedule work in a specific way.
 For example, if you want to continue with work on the main thread:
 ```swift
-fetch(object).continueWith(Executor.MainThread) { task in 
+fetch(object).continueWith(Executor.mainThread) { task in 
   // This closure will be executor on the main application's thread
 }
 ```
