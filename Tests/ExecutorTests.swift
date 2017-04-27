@@ -93,6 +93,18 @@ class ExecutorTests: XCTestCase {
 
         waitForTestExpectations()
     }
+    
+    func testEscapingClosureExecute() {
+        let expectation = self.expectation(description: currentTestName)
+        
+        Executor.escapingClosure { closure in
+            closure()
+            }.execute { () -> Void in
+                expectation.fulfill()
+        }
+        
+        waitForTestExpectations()
+    }
 
     func testOperationQueueExecute() {
         let expectation = self.expectation(description: currentTestName)

@@ -44,6 +44,11 @@ public enum Executor {
      Passes closures to an executing closure.
      */
     case closure((() -> Void) -> Void)
+    
+    /**
+     Passes escaping closures to an executing closure.
+     */
+    case escapingClosure((@escaping () -> Void) -> Void)
 
     /**
      Executes the given closure using the corresponding strategy.
@@ -88,6 +93,8 @@ public enum Executor {
             operationQueue.addOperation(closure)
         case .closure(let executingClosure):
             executingClosure(closure)
+        case .escapingClosure(let executingEscapingClosure):
+            executingEscapingClosure(closure)
         }
     }
 }
@@ -108,6 +115,8 @@ extension Executor : CustomStringConvertible, CustomDebugStringConvertible {
             return "Executor with NSOperationQueue"
         case .closure:
             return "Executor with custom closure"
+        case .escapingClosure:
+            return "Executor with custom escaping closure"
         }
     }
 
@@ -119,6 +128,8 @@ extension Executor : CustomStringConvertible, CustomDebugStringConvertible {
         case .operationQueue(let queue):
             return "\(description): \(queue)"
         case .closure(let closure):
+            return "\(description): \(closure)"
+        case .escapingClosure(let closure):
             return "\(description): \(closure)"
         default:
             return description
