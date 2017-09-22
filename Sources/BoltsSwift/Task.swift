@@ -93,7 +93,7 @@ public final class Task<TResult> {
     }
 
     class func emptyTask() -> Task<Void> {
-        return Task<Void>(state: .success())
+        return Task<Void>(state: .success(()))
     }
 
     // MARK: Execute
@@ -107,7 +107,7 @@ public final class Task<TResult> {
      - parameter closure:  The closure that returns the result of the task.
      The returned task will complete when the closure completes.
      */
-    public convenience init(_ executor: Executor = .default, closure: @escaping ((Void) throws -> TResult)) {
+    public convenience init(_ executor: Executor = .default, closure: @escaping (() throws -> TResult)) {
         self.init(state: .pending())
         executor.execute {
             self.trySet(state: TaskState.fromClosure(closure))
@@ -123,7 +123,7 @@ public final class Task<TResult> {
 
      - returns: A task that will continue with the task returned by the given closure.
      */
-    public class func execute(_ executor: Executor = .default, closure: @escaping ((Void) throws -> TResult)) -> Task {
+    public class func execute(_ executor: Executor = .default, closure: @escaping (() throws -> TResult)) -> Task {
         return Task(executor, closure: closure)
     }
 

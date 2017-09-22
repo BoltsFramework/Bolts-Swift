@@ -13,6 +13,6 @@
 PRODUCT_NAME = BoltsSwiftTests
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.tvos.tests
 
-SWIFT_VERSION = 3.0
+SWIFT_VERSION = 4.0
 
 INFOPLIST_FILE = $(SRCROOT)/Tests/Info.plist

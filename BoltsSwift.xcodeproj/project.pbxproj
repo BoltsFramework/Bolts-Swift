@@ -485,7 +485,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					065894E61C9A933B000FDDA6 = {
@@ -771,6 +771,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB53B1D3597BF00552C9F /* Debug.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 			};
 			name = Debug;
 		};
@@ -778,6 +782,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB53C1D3597BF00552C9F /* Release.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 			};
 			name = Release;
 		};
@@ -785,6 +793,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5271D3597BF00552C9F /* BoltsSwift-iOS.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -792,6 +801,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5271D3597BF00552C9F /* BoltsSwift-iOS.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

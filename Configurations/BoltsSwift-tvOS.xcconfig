@@ -14,6 +14,6 @@
 PRODUCT_NAME = BoltsSwift
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.tvos
 
-SWIFT_VERSION = 3.0
+SWIFT_VERSION = 4.0
 
 INFOPLIST_FILE = $(SRCROOT)/Sources/Info.plist
