@@ -58,7 +58,7 @@ public final class Task<TResult> {
 
     // MARK: Initializers
 
-    init() {}
+    public init() {}
 
     init(state: TaskState<TResult>) {
         _state = state
