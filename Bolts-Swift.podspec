@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Bolts-Swift'
-  s.version          = '1.3.0'
+  s.version          = '1.4.0'
   s.license          =  { :type => 'BSD' }
   s.summary          = 'Bolts is a collection of low-level libraries designed to make developing mobile apps easier.'
   s.homepage         = 'https://github.com/BoltsFramework'
@@ -11,6 +11,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.swift_version = '4.0'
+  s.cocoapods_version = '>= 1.4'
 
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.10'
