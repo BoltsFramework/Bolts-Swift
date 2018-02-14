@@ -44,7 +44,7 @@ class TaskCompletionSourceTests: XCTestCase {
         XCTAssertTrue(task.completed)
         XCTAssertTrue(task.faulted)
         XCTAssertNotNil(task.error)
-        XCTAssertEqual(task.error as? NSError, error)
+        XCTAssertEqual(task.error as NSError?, error)
     }
 
     func testCancel() {
@@ -80,7 +80,7 @@ class TaskCompletionSourceTests: XCTestCase {
         XCTAssertTrue(task.completed)
         XCTAssertTrue(task.faulted)
         XCTAssertNotNil(task.error)
-        XCTAssertEqual(task.error as? NSError, error)
+        XCTAssertEqual(task.error! as NSError, error)
     }
 
     func testTryCancelReturningTrue() {

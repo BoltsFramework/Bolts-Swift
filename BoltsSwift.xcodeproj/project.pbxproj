@@ -84,6 +84,7 @@
 		065894E71C9A933B000FDDA6 /* BoltsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BoltsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		065894FF1C9A93B7000FDDA6 /* BoltsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BoltsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0658951B1C9A947B000FDDA6 /* BoltsSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoltsSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AE4F1EE2034E2E80099694C /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		810AB31F1C9B1AC3005B6184 /* XCTestCase+TestName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+TestName.swift"; sourceTree = "<group>"; };
 		812DB5271D3597BF00552C9F /* BoltsSwift-iOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "BoltsSwift-iOS.xcconfig"; sourceTree = "<group>"; };
 		812DB5281D3597BF00552C9F /* BoltsSwift-macOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "BoltsSwift-macOS.xcconfig"; sourceTree = "<group>"; };
@@ -183,6 +184,7 @@
 		812DB5261D3597BF00552C9F /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				4AE4F1EE2034E2E80099694C /* Common.xcconfig */,
 				812DB5271D3597BF00552C9F /* BoltsSwift-iOS.xcconfig */,
 				812DB5281D3597BF00552C9F /* BoltsSwift-macOS.xcconfig */,
 				812DB5291D3597BF00552C9F /* BoltsSwift-tvOS.xcconfig */,
@@ -490,20 +492,29 @@
 				TargetAttributes = {
 					065894E61C9A933B000FDDA6 = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0920;
+					};
+					065894F31C9A93B7000FDDA6 = {
+						LastSwiftMigration = 0920;
+					};
+					0658950E1C9A947B000FDDA6 = {
+						LastSwiftMigration = 0920;
 					};
 					81CC14EB1A9BE0A100B28F86 = {
 						CreatedOnToolsVersion = 6.3;
+						LastSwiftMigration = 0920;
 					};
 					81CC14F51A9BE0A100B28F86 = {
 						CreatedOnToolsVersion = 6.3;
+						LastSwiftMigration = 0920;
 					};
 					87FEF3651A9085FA00C60678 = {
 						CreatedOnToolsVersion = 6.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0920;
 					};
 					87FEF3701A9085FA00C60678 = {
 						CreatedOnToolsVersion = 6.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0920;
 					};
 				};
 			};

@@ -9,10 +9,9 @@
 
 #include "Shared/Platform/tvOS.xcconfig"
 #include "Shared/Product/LogicTests.xcconfig"
+#include "Common.xcconfig"
 
 PRODUCT_NAME = BoltsSwiftTests
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.tvos.tests
-
-SWIFT_VERSION = 3.0
 
 INFOPLIST_FILE = $(SRCROOT)/Tests/Info.plist

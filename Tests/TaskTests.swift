@@ -34,7 +34,7 @@ class TaskTests: XCTestCase {
         XCTAssertTrue(task.faulted)
         XCTAssertFalse(task.cancelled)
         XCTAssertNotNil(task.error)
-        XCTAssertEqual(task.error as? NSError, error)
+        XCTAssertEqual(task.error! as NSError, error)
     }
 
     func testCancelledTask() {

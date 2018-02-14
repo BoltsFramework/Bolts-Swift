@@ -1,0 +1,15 @@
+//
+//  Common.xcconfig
+//  BoltsSwift
+//
+//  Created by Florent Vilmart on 18-02-14.
+//  Copyright © 2018 Facebook. All rights reserved.
+//
+
+CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+CLANG_WARN_COMMA = YES;
+CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+CLANG_WARN_STRICT_PROTOTYPES = YES;
+CLANG_WARN_SUSPICIOUS_MOVE = YES;
+SWIFT_VERSION = 4.0;
+SWIFT_SWIFT3_OBJC_INFERENCE = Default;

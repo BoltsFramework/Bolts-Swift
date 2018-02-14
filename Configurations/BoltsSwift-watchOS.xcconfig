@@ -10,10 +10,9 @@
 #include "Shared/Platform/watchOS.xcconfig"
 #include "Shared/Product/DynamicFramework.xcconfig"
 #include "Version.xcconfig"
+#include "Common.xcconfig"
 
 PRODUCT_NAME = BoltsSwift
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.watchos
-
-SWIFT_VERSION = 3.0
 
 INFOPLIST_FILE = $(SRCROOT)/Sources/Info.plist
