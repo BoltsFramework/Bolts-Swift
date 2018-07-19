@@ -1,6 +1,19 @@
 # Change Log
 
-## [1.3.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.3.0) (2016-09-19)
+## [1.4.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.4.0) (2018-07-19)
+[Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.3.0...1.4.0)
+
+**Implemented enhancements:**
+
+- Remove flatMap because it is now deprecated in Swift 4.1 [\#71](https://github.com/BoltsFramework/Bolts-Swift/pull/71) ([sebleclerc](https://github.com/sebleclerc))
+- Swift 4.0 Support [\#64](https://github.com/BoltsFramework/Bolts-Swift/pull/64) ([nlutsenko](https://github.com/nlutsenko))
+- Adding a new executor which takes an escaping closure [\#58](https://github.com/BoltsFramework/Bolts-Swift/pull/58) ([sebleclerc](https://github.com/sebleclerc))
+
+**Merged pull requests:**
+
+- Changed casing of Executor enum value in README. [\#56](https://github.com/BoltsFramework/Bolts-Swift/pull/56) ([sjorsvb](https://github.com/sjorsvb))
+
+## [1.3.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.3.0) (2016-09-20)
 [Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.2.0...1.3.0)
 
 **Implemented enhancements:**
@@ -13,6 +26,8 @@
 
 **Merged pull requests:**
 
+- Update a TaskCompletionSource usage example for Swift 3.0. [\#48](https://github.com/BoltsFramework/Bolts-Swift/pull/48) ([sapzildj](https://github.com/sapzildj))
+- Bolts 1.3.0 🔩 [\#42](https://github.com/BoltsFramework/Bolts-Swift/pull/42) ([nlutsenko](https://github.com/nlutsenko))
 - Set lowest deployment macOS target to 10.10. [\#41](https://github.com/BoltsFramework/Bolts-Swift/pull/41) ([nlutsenko](https://github.com/nlutsenko))
 - Fix README for TaskCompletionSource.cancel\(\) [\#37](https://github.com/BoltsFramework/Bolts-Swift/pull/37) ([ceyhuno](https://github.com/ceyhuno))
 
