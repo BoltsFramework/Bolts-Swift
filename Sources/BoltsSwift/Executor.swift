@@ -128,9 +128,9 @@ extension Executor : CustomStringConvertible, CustomDebugStringConvertible {
         case .operationQueue(let queue):
             return "\(description): \(queue)"
         case .closure(let closure):
-            return "\(description): \(closure)"
+            return "\(description): \(String(describing: closure))"
         case .escapingClosure(let closure):
-            return "\(description): \(closure)"
+            return "\(description): \(String(describing: closure))"
         default:
             return description
         }
