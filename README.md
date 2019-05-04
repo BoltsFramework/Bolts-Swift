@@ -72,9 +72,10 @@ save(object).continueWith { task in
 
 In many cases, you only want to do more work if the previous task was successful, and propagate any error or cancellation to be dealt with later. To do this, use `continueOnSuccessWith` function:
 ```swift
-save(object).continueOnSuccessWith { task in 
-  // The object was saved succesfully
-  let result = task.result
+save(object).continueOnSuccessWith { result in
+  // Closure receives the result of a succesfully performed task
+  // You can also use this closure to throw an error (if result is
+  // invalid) which will mark task as faulted.
 }
 ```
 
