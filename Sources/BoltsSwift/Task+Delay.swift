@@ -29,4 +29,30 @@ extension Task {
         }
         return taskCompletionSource.task
     }
+
+    public class func withDelay(_ delay: TimeInterval, _ cancellationToken: CancellationToken) -> Task<Void> {
+        let taskCompletionSource = TaskCompletionSource<Void>()
+
+        if cancellationToken.cancellationRequested {
+            taskCompletionSource.cancel()
+            return taskCompletionSource.task
+        }
+
+        let dispatchItem = DispatchWorkItem {
+            if cancellationToken.cancellationRequested {
+                taskCompletionSource.cancel()
+                return
+            }
+            taskCompletionSource.trySet(result: ())
+        }
+
+        let time = DispatchTime.now() + delay
+        DispatchQueue.global(qos: .default).asyncAfter(deadline: time, execute: dispatchItem)
+
+        cancellationToken.registerCancellationObserver {
+            dispatchItem.cancel()
+            taskCompletionSource.tryCancel()
+        }
+        return taskCompletionSource.task
+    }
 }

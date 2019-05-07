@@ -38,6 +38,21 @@
 		81D3007F1C93AF9F00E1A1ED /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D300781C93AF9F00E1A1ED /* TaskTests.swift */; };
 		81D300801C93AF9F00E1A1ED /* TaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D300781C93AF9F00E1A1ED /* TaskTests.swift */; };
 		87FEF3721A9085FA00C60678 /* BoltsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87FEF3661A9085FA00C60678 /* BoltsSwift.framework */; };
+		EA34D7492281A8D60024A0C3 /* CancellationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34D7482281A8D60024A0C3 /* CancellationTests.swift */; };
+		EA34D74A2281A8D60024A0C3 /* CancellationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34D7482281A8D60024A0C3 /* CancellationTests.swift */; };
+		EA34D74B2281A8D60024A0C3 /* CancellationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34D7482281A8D60024A0C3 /* CancellationTests.swift */; };
+		EA6E8600227C7F10009A18B7 /* CancellationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E85FF227C7F10009A18B7 /* CancellationToken.swift */; };
+		EA6E8601227C7F10009A18B7 /* CancellationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E85FF227C7F10009A18B7 /* CancellationToken.swift */; };
+		EA6E8602227C7F10009A18B7 /* CancellationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E85FF227C7F10009A18B7 /* CancellationToken.swift */; };
+		EA6E8603227C7F10009A18B7 /* CancellationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E85FF227C7F10009A18B7 /* CancellationToken.swift */; };
+		EA6E8605227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8604227C7F26009A18B7 /* CancellationTokenRegistration.swift */; };
+		EA6E8606227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8604227C7F26009A18B7 /* CancellationTokenRegistration.swift */; };
+		EA6E8607227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8604227C7F26009A18B7 /* CancellationTokenRegistration.swift */; };
+		EA6E8608227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8604227C7F26009A18B7 /* CancellationTokenRegistration.swift */; };
+		EA6E860A227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8609227C7F32009A18B7 /* CancellationTokenSource.swift */; };
+		EA6E860B227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8609227C7F32009A18B7 /* CancellationTokenSource.swift */; };
+		EA6E860C227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8609227C7F32009A18B7 /* CancellationTokenSource.swift */; };
+		EA6E860D227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6E8609227C7F32009A18B7 /* CancellationTokenSource.swift */; };
 		F569C0C11CFF6A07000749B6 /* Task+ContinueWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = F569C0C01CFF6A07000749B6 /* Task+ContinueWith.swift */; };
 		F569C0C21CFF6A07000749B6 /* Task+ContinueWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = F569C0C01CFF6A07000749B6 /* Task+ContinueWith.swift */; };
 		F569C0C31CFF6A07000749B6 /* Task+ContinueWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = F569C0C01CFF6A07000749B6 /* Task+ContinueWith.swift */; };
@@ -118,6 +133,10 @@
 		81D300781C93AF9F00E1A1ED /* TaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
 		87FEF3661A9085FA00C60678 /* BoltsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BoltsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87FEF3711A9085FA00C60678 /* BoltsSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoltsSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA34D7482281A8D60024A0C3 /* CancellationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationTests.swift; sourceTree = "<group>"; };
+		EA6E85FF227C7F10009A18B7 /* CancellationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationToken.swift; sourceTree = "<group>"; };
+		EA6E8604227C7F26009A18B7 /* CancellationTokenRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationTokenRegistration.swift; sourceTree = "<group>"; };
+		EA6E8609227C7F32009A18B7 /* CancellationTokenSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationTokenSource.swift; sourceTree = "<group>"; };
 		F569C0C01CFF6A07000749B6 /* Task+ContinueWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+ContinueWith.swift"; sourceTree = "<group>"; };
 		F569C0CB1CFF6AEE000749B6 /* Task+Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Delay.swift"; sourceTree = "<group>"; };
 		F569C0D61CFF6B18000749B6 /* Task+WhenAll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+WhenAll.swift"; sourceTree = "<group>"; };
@@ -259,6 +278,9 @@
 				F569C0E01CFF6B1F000749B6 /* Task+WhenAny.swift */,
 				81D300641C93AF7300E1A1ED /* Executor.swift */,
 				81D300631C93AF7300E1A1ED /* Errors.swift */,
+				EA6E85FF227C7F10009A18B7 /* CancellationToken.swift */,
+				EA6E8604227C7F26009A18B7 /* CancellationTokenRegistration.swift */,
+				EA6E8609227C7F32009A18B7 /* CancellationTokenSource.swift */,
 			);
 			path = BoltsSwift;
 			sourceTree = "<group>";
@@ -274,6 +296,7 @@
 		81D300741C93AF9F00E1A1ED /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				EA34D7482281A8D60024A0C3 /* CancellationTests.swift */,
 				81D300781C93AF9F00E1A1ED /* TaskTests.swift */,
 				81D300771C93AF9F00E1A1ED /* TaskCompletionSourceTests.swift */,
 				81D300751C93AF9F00E1A1ED /* ExecutorTests.swift */,
@@ -512,6 +535,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 87FEF35C1A9085FA00C60678;
@@ -592,9 +616,12 @@
 				065894EF1C9A9391000FDDA6 /* Task.swift in Sources */,
 				F569C0CF1CFF6AEE000749B6 /* Task+Delay.swift in Sources */,
 				F569C0C41CFF6A07000749B6 /* Task+ContinueWith.swift in Sources */,
+				EA6E8603227C7F10009A18B7 /* CancellationToken.swift in Sources */,
+				EA6E860D227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */,
 				F569C0E41CFF6B1F000749B6 /* Task+WhenAny.swift in Sources */,
 				065894F11C9A9391000FDDA6 /* Executor.swift in Sources */,
 				065894F01C9A9391000FDDA6 /* TaskCompletionSource.swift in Sources */,
+				EA6E8608227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,9 +634,12 @@
 				065894F61C9A93B7000FDDA6 /* Task.swift in Sources */,
 				F569C0CE1CFF6AEE000749B6 /* Task+Delay.swift in Sources */,
 				F569C0C31CFF6A07000749B6 /* Task+ContinueWith.swift in Sources */,
+				EA6E8602227C7F10009A18B7 /* CancellationToken.swift in Sources */,
+				EA6E860C227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */,
 				F569C0E31CFF6B1F000749B6 /* Task+WhenAny.swift in Sources */,
 				065894F71C9A93B7000FDDA6 /* Errors.swift in Sources */,
 				065894F81C9A93B7000FDDA6 /* TaskCompletionSource.swift in Sources */,
+				EA6E8607227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -619,6 +649,7 @@
 			files = (
 				065895121C9A947B000FDDA6 /* ExecutorTests.swift in Sources */,
 				065895131C9A947B000FDDA6 /* TaskTests.swift in Sources */,
+				EA34D74B2281A8D60024A0C3 /* CancellationTests.swift in Sources */,
 				065895141C9A947B000FDDA6 /* TaskCompletionSourceTests.swift in Sources */,
 				810AB3221C9B1AC3005B6184 /* XCTestCase+TestName.swift in Sources */,
 			);
@@ -633,9 +664,12 @@
 				81D3006D1C93AF7300E1A1ED /* Task.swift in Sources */,
 				F569C0CD1CFF6AEE000749B6 /* Task+Delay.swift in Sources */,
 				F569C0C21CFF6A07000749B6 /* Task+ContinueWith.swift in Sources */,
+				EA6E8601227C7F10009A18B7 /* CancellationToken.swift in Sources */,
+				EA6E860B227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */,
 				F569C0E21CFF6B1F000749B6 /* Task+WhenAny.swift in Sources */,
 				81D300691C93AF7300E1A1ED /* Errors.swift in Sources */,
 				81D3006F1C93AF7300E1A1ED /* TaskCompletionSource.swift in Sources */,
+				EA6E8606227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +679,7 @@
 			files = (
 				81D3007A1C93AF9F00E1A1ED /* ExecutorTests.swift in Sources */,
 				81D300801C93AF9F00E1A1ED /* TaskTests.swift in Sources */,
+				EA34D74A2281A8D60024A0C3 /* CancellationTests.swift in Sources */,
 				81D3007E1C93AF9F00E1A1ED /* TaskCompletionSourceTests.swift in Sources */,
 				810AB3211C9B1AC3005B6184 /* XCTestCase+TestName.swift in Sources */,
 			);
@@ -659,9 +694,12 @@
 				81D3006C1C93AF7300E1A1ED /* Task.swift in Sources */,
 				F569C0CC1CFF6AEE000749B6 /* Task+Delay.swift in Sources */,
 				F569C0C11CFF6A07000749B6 /* Task+ContinueWith.swift in Sources */,
+				EA6E8600227C7F10009A18B7 /* CancellationToken.swift in Sources */,
+				EA6E860A227C7F32009A18B7 /* CancellationTokenSource.swift in Sources */,
 				F569C0E11CFF6B1F000749B6 /* Task+WhenAny.swift in Sources */,
 				81D300681C93AF7300E1A1ED /* Errors.swift in Sources */,
 				81D3006E1C93AF7300E1A1ED /* TaskCompletionSource.swift in Sources */,
+				EA6E8605227C7F26009A18B7 /* CancellationTokenRegistration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +709,7 @@
 			files = (
 				81D300791C93AF9F00E1A1ED /* ExecutorTests.swift in Sources */,
 				81D3007F1C93AF9F00E1A1ED /* TaskTests.swift in Sources */,
+				EA34D7492281A8D60024A0C3 /* CancellationTests.swift in Sources */,
 				81D3007D1C93AF9F00E1A1ED /* TaskCompletionSourceTests.swift in Sources */,
 				810AB3201C9B1AC3005B6184 /* XCTestCase+TestName.swift in Sources */,
 			);

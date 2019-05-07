@@ -10,7 +10,7 @@
 import Foundation
 
 enum TaskState<TResult> {
-    case pending()
+    case pending
     case success(TResult)
     case error(Error)
     case cancelled
@@ -53,7 +53,7 @@ public final class Task<TResult> {
     fileprivate let synchronizationQueue = DispatchQueue(label: "com.bolts.task", attributes: DispatchQueue.Attributes.concurrent)
     fileprivate var _completedCondition: NSCondition?
 
-    fileprivate var _state: TaskState<TResult> = .pending()
+    fileprivate var _state: TaskState<TResult> = .pending
     fileprivate var _continuations: [Continuation] = Array()
 
     // MARK: Initializers
@@ -108,7 +108,7 @@ public final class Task<TResult> {
      The returned task will complete when the closure completes.
      */
     public convenience init(_ executor: Executor = .default, closure: @escaping (() throws -> TResult)) {
-        self.init(state: .pending())
+        self.init(state: .pending)
         executor.execute {
             self.trySet(state: TaskState.fromClosure(closure))
         }
@@ -242,7 +242,7 @@ public final class Task<TResult> {
         var completedCondition: NSCondition?
         synchronizationQueue.sync(flags: .barrier, execute: {
             switch self._state {
-            case .pending():
+            case .pending:
                 stateChanged = true
                 self._state = state
                 continuations = self._continuations
