@@ -3,16 +3,25 @@ branches:
     - master
 language: objective-c
 os: osx
-osx_image: xcode9
 cache:
   - cocoapods
-env:
-  matrix:
-    - TEST_TYPE=iOS
-    - TEST_TYPE=macOS
-    - TEST_TYPE=tvOS
-    - TEST_TYPE=Lint
-    - TEST_TYPE=Distribution
+matrix:
+  include:
+  - osx_image: xcode9
+    env: TEST_TYPE=iOS SWIFT_VERSION=4.0 DESTINATION='platform=iOS Simulator,name=iPhone 4s,OS=8.1'
+  - osx_image: xcode10
+    env: TEST_TYPE=iOS SWIFT_VERSION=4.2 DESTINATION='platform=iOS Simulator,name=iPhone X,OS=11.1'
+  # comment this in after the project was migrated to Swift 5.0
+  # - osx_image: xcode10.2
+  #   env: TEST_TYPE=iOS SWIFT_VERSION=5.0 DESTINATION='platform=iOS Simulator,name=iPhone Xs,OS=12.2'
+  - osx_image: xcode9
+    env: TEST_TYPE=macOS SWIFT_VERSION=4.0
+  - osx_image: xcode9
+    env: TEST_TYPE=tvOS SWIFT_VERSION=4.0
+  - osx_image: xcode10.2
+    env: TEST_TYPE=Lint 
+  - osx_image: xcode10.2
+    env: TEST_TYPE=Distribution
 before_install:
 - |
   if [ "$TEST_TYPE" = Lint ] || [ "$TEST_TYPE" = Distribution ]; then
@@ -21,19 +30,20 @@ before_install:
 install:
 - |
   if [ "$TEST_TYPE" = iOS ] || [ "$TEST_TYPE" = macOS ] || [ "$TEST_TYPE" = tvOS ]; then
-    gem install xcpretty -N --no-ri --no-rdoc
+    gem install xcpretty --no-document
   elif [ "$TEST_TYPE" = Lint ]; then
     brew install swiftlint || brew upgrade swiftlint
   elif [ "$TEST_TYPE" = Distribution ]; then
-    gem install cocoapods --pre --quiet --no-ri --no-rdoc
+    gem install cocoapods --pre --quiet --no-document
     brew install carthage || brew upgrade carthage
   fi
 script:
 - |
+    [ ! -z "$SWIFT_VERSION" ] && sed -i '' -e "s/^SWIFT_VERSION *=.*/SWIFT_VERSION = $SWIFT_VERSION/g" Configurations/*.xcconfig
     if [ "$TEST_TYPE" = iOS ]; then
       set -o pipefail
-      xcodebuild test -project BoltsSwift.xcodeproj -sdk iphonesimulator -scheme BoltsSwift-iOS -configuration Debug -destination "platform=iOS Simulator,name=iPhone 4s" -destination "platform=iOS Simulator,name=iPhone 6 Plus" GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty -c
-      xcodebuild test -project BoltsSwift.xcodeproj -sdk iphonesimulator -scheme BoltsSwift-iOS -configuration Release -destination "platform=iOS Simulator,name=iPhone 4s" -destination "platform=iOS Simulator,name=iPhone 6 Plus" GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty -c
+      xcodebuild test -project BoltsSwift.xcodeproj -sdk iphonesimulator -scheme BoltsSwift-iOS -configuration Debug -destination "$DESTINATION" GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty -c
+      xcodebuild test -project BoltsSwift.xcodeproj -sdk iphonesimulator -scheme BoltsSwift-iOS -configuration Release -destination "$DESTINATION" GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty -c
     elif [ "$TEST_TYPE" = macOS ]; then
       set -o pipefail
       xcodebuild test -project BoltsSwift.xcodeproj -sdk macosx -scheme BoltsSwift-macOS -configuration Debug GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty -c
