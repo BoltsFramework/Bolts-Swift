@@ -20,25 +20,36 @@ extension Task {
      - parameter executor:     The executor to invoke the closure on.
      - parameter options:      The options to run the closure with
      - parameter continuation: The closure to execute.
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
 
      - returns: The task resulting from the continuation
      */
     fileprivate func continueWithTask<S>(_ executor: Executor,
-                                  options: TaskContinuationOptions,
-                                  continuation: @escaping ((Task) throws -> Task<S>)
-        ) -> Task<S> {
+                                         options: TaskContinuationOptions,
+                                         cancellationToken: CancellationToken? = nil,
+                                         continuation: @escaping ((Task) throws -> Task<S>)
+    ) -> Task<S> {
         let taskCompletionSource = TaskCompletionSource<S>()
         let wrapperContinuation = {
+            if (cancellationToken?.cancellationRequested ?? false) {
+                taskCompletionSource.cancel()
+                return
+            }
             switch self.state {
             case .success where options.contains(.RunOnSuccess): fallthrough
             case .error where options.contains(.RunOnError): fallthrough
             case .cancelled where options.contains(.RunOnCancelled):
                 executor.execute {
+
                     let wrappedState = TaskState<Task<S>>.fromClosure {
                         try continuation(self)
                     }
                     switch wrappedState {
                     case .success(let nextTask):
+                        if (cancellationToken?.cancellationRequested ?? false) {
+                            taskCompletionSource.cancel()
+                            return
+                        }
                         switch nextTask.state {
                         case .pending:
                             nextTask.continueWith { nextTask in
@@ -76,14 +87,15 @@ extension Task {
     /**
      Enqueues a given closure to be run once this task is complete.
 
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns the result of the task.
+     - parameter executor:          Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns the result of the task.
 
      - returns: A task that will be completed with a result from a given closure.
      */
     @discardableResult
-    public func continueWith<S>(_ executor: Executor = .default, continuation: @escaping ((Task) throws -> S)) -> Task<S> {
-        return continueWithTask(executor) { task in
+    public func continueWith<S>(_ executor: Executor = .default, _ cancelationToken: CancellationToken? = nil, continuation: @escaping ((Task) throws -> S)) -> Task<S> {
+        return continueWithTask(executor, cancelationToken) { task in
             let state = TaskState.fromClosure({
                 try continuation(task)
             })
@@ -93,15 +105,47 @@ extension Task {
 
     /**
      Enqueues a given closure to be run once this task is complete.
+     
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns the result of the task.
+     
+     - returns: A task that will be completed with a result from a given closure.
+     */
+    @discardableResult
+    public func continueWith<S>(_ cancelationToken: CancellationToken, continuation: @escaping ((Task) throws -> S)) -> Task<S> {
+        return continueWithTask(.default, cancelationToken) { task in
+            let state = TaskState.fromClosure({
+                try continuation(task)
+            })
+            return Task<S>(state: state)
+        }
+    }
 
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
-
+    /**
+     Enqueues a given closure to be run once this task is complete.
+     
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns a task to chain on.
+     
      - returns: A task that will be completed when a task returned from a closure is completed.
      */
     @discardableResult
-    public func continueWithTask<S>(_ executor: Executor = .default, continuation: @escaping ((Task) throws -> Task<S>)) -> Task<S> {
-        return continueWithTask(executor, options: .RunAlways, continuation: continuation)
+    public func continueWithTask<S>(_ cancellationToken: CancellationToken, continuation: @escaping ((Task) throws -> Task<S>)) -> Task<S> {
+        return continueWithTask(.default, options: .RunAlways, cancellationToken: cancellationToken, continuation: continuation)
+    }
+
+    /**
+     Enqueues a given closure to be run once this task is complete.
+     
+     - parameter executor:          Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns a task to chain on.
+     
+     - returns: A task that will be completed when a task returned from a closure is completed.
+     */
+    @discardableResult
+    public func continueWithTask<S>(_ executor: Executor = .default, _ cancellationToken: CancellationToken? = nil, continuation: @escaping ((Task) throws -> Task<S>)) -> Task<S> {
+        return continueWithTask(executor, options: .RunAlways, cancellationToken: cancellationToken, continuation: continuation)
     }
 }
 
@@ -113,15 +157,17 @@ extension Task {
     /**
      Enqueues a given closure to be run once this task completes with success (has intended result).
 
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
+     - parameter executor:          Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns a task to chain on.
 
      - returns: A task that will be completed when a task returned from a closure is completed.
      */
     @discardableResult
     public func continueOnSuccessWith<S>(_ executor: Executor = .default,
-                                      continuation: @escaping ((TResult) throws -> S)) -> Task<S> {
-        return continueOnSuccessWithTask(executor) { taskResult in
+                                         _ cancellationToken: CancellationToken? = nil,
+                                         continuation: @escaping ((TResult) throws -> S)) -> Task<S> {
+        return continueOnSuccessWithTask(executor, cancellationToken) { taskResult in
             let state = TaskState.fromClosure({
                 try continuation(taskResult)
             })
@@ -131,16 +177,53 @@ extension Task {
 
     /**
      Enqueues a given closure to be run once this task completes with success (has intended result).
+     
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns a task to chain on.
+     
+     - returns: A task that will be completed when a task returned from a closure is completed.
+     */
+    @discardableResult
+    public func continueOnSuccessWith<S>(_ cancellationToken: CancellationToken,
+                                         continuation: @escaping ((TResult) throws -> S)) -> Task<S> {
+        return continueOnSuccessWithTask(.default, cancellationToken) { taskResult in
+            let state = TaskState.fromClosure({
+                try continuation(taskResult)
+            })
+            return Task<S>(state: state)
+        }
+    }
 
-     - parameter executor:     Determines how the the closure is called. The default is to call the closure immediately.
-     - parameter continuation: The closure that returns a task to chain on.
+    /**
+     Enqueues a given closure to be run once this task completes with success (has intended result).
+     
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns a task to chain on.
+     
+     - returns: A task that will be completed when a task returned from a closure is completed.
+     */
+    @discardableResult
+    public func continueOnSuccessWithTask<S>(_ cancellationToken: CancellationToken,
+                                             continuation: @escaping ((TResult) throws -> Task<S>)) -> Task<S> {
+        return continueWithTask(.default, options: .RunOnSuccess, cancellationToken: cancellationToken) { task in
+            return try continuation(task.result!)
+        }
+    }
+
+    /**
+     Enqueues a given closure to be run once this task completes with success (has intended result).
+
+     - parameter executor:          Determines how the the closure is called. The default is to call the closure immediately.
+     - parameter cancellationToken: The cancellationToken to cancel the task queue.
+     - parameter continuation:      The closure that returns a task to chain on.
 
      - returns: A task that will be completed when a task returned from a closure is completed.
      */
     @discardableResult
     public func continueOnSuccessWithTask<S>(_ executor: Executor = .default,
-                                          continuation: @escaping ((TResult) throws -> Task<S>)) -> Task<S> {
-        return continueWithTask(executor, options: .RunOnSuccess) { task in
+                                             _ cancellationToken: CancellationToken? = nil,
+                                             continuation: @escaping ((TResult) throws -> Task<S>)) -> Task<S> {
+        return continueWithTask(executor, options: .RunOnSuccess, cancellationToken: cancellationToken) { task in
             return try continuation(task.result!)
         }
     }
@@ -160,8 +243,8 @@ extension Task {
      - returns: A task that will be completed when a task returned from a closure is completed.
      */
     @discardableResult
-    public func continueOnErrorWith<E: Error>(_ executor: Executor = .default, continuation: @escaping ((E) throws -> TResult)) -> Task {
-        return continueOnErrorWithTask(executor) { (error: E) in
+    public func continueOnErrorWith<E: Error>(_ executor: Executor = .default, _ cancellationToken: CancellationToken? = nil, continuation: @escaping ((E) throws -> TResult)) -> Task {
+        return continueOnErrorWithTask(executor, cancellationToken) { (error: E) in
             let state = TaskState.fromClosure({
                 try continuation(error)
             })
@@ -178,8 +261,8 @@ extension Task {
      - returns: A task that will be completed when a task returned from a closure is completed.
      */
     @discardableResult
-    public func continueOnErrorWith(_ executor: Executor = .default, continuation: @escaping ((Error) throws -> TResult)) -> Task {
-        return continueOnErrorWithTask(executor) { (error: Error) in
+    public func continueOnErrorWith(_ executor: Executor = .default, _ cancellationToken: CancellationToken? = nil, continuation: @escaping ((Error) throws -> TResult)) -> Task {
+        return continueOnErrorWithTask(executor, cancellationToken) { (error: Error) in
             let state = TaskState.fromClosure({
                 try continuation(error)
             })
@@ -196,8 +279,8 @@ extension Task {
      - returns: A task that will be completed when a task returned from a closure is completed.
      */
     @discardableResult
-    public func continueOnErrorWithTask<E: Error>(_ executor: Executor = .default, continuation: @escaping ((E) throws -> Task)) -> Task {
-        return continueOnErrorWithTask(executor) { (error: Error) in
+    public func continueOnErrorWithTask<E: Error>(_ executor: Executor = .default, _ cancellationToken: CancellationToken? = nil, continuation: @escaping ((E) throws -> Task)) -> Task {
+        return continueOnErrorWithTask(executor, cancellationToken) { (error: Error) in
             if let error = error as? E {
                 return try continuation(error)
             }
@@ -214,8 +297,8 @@ extension Task {
      - returns: A task that will be completed when a task returned from a closure is completed.
      */
     @discardableResult
-    public func continueOnErrorWithTask(_ executor: Executor = .default, continuation: @escaping ((Error) throws -> Task)) -> Task {
-        return continueWithTask(executor, options: .RunOnError) { task in
+    public func continueOnErrorWithTask(_ executor: Executor = .default, _ cancellationToken: CancellationToken? = nil, continuation: @escaping ((Error) throws -> Task)) -> Task {
+        return continueWithTask(executor, options: .RunOnError, cancellationToken: cancellationToken) { task in
             return try continuation(task.error!)
         }
     }

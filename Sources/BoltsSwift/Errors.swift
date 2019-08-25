@@ -32,3 +32,11 @@ public struct CancelledError: Error {
      */
     public init() { }
 }
+
+public struct DisposedError: Error {
+    public init() {}
+}
+
+public struct IntervalError: Error {
+    public init() {}
+}

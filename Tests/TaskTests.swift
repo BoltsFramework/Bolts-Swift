@@ -294,23 +294,23 @@ class TaskTests: XCTestCase {
             count += 1
             XCTAssertEqual(count, 1)
             return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 2)
-                return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 3)
-                return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 4)
-                return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 5)
-                expectation.fulfill()
-                return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 2)
+            return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 3)
+            return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 4)
+            return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 5)
+            expectation.fulfill()
+            return nil
         }
 
         waitForTestExpectations()
@@ -324,19 +324,19 @@ class TaskTests: XCTestCase {
         Task<Void>.cancelledTask().continueWith(executor) { _ in
             count += 1
             XCTAssertEqual(count, 1)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 2)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 3)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 4)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 5)
-                expectation.fulfill()
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 2)
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 3)
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 4)
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 5)
+            expectation.fulfill()
         }
 
         waitForTestExpectations()
@@ -401,10 +401,10 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(continuation: { task -> Int in
-                    OSAtomicIncrement32(&count)
-                    return i
-                })
+                    .continueWith(continuation: { task -> Int in
+                        OSAtomicIncrement32(&count)
+                        return i
+                    })
             tasks.append(task)
         }
 
@@ -431,10 +431,10 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(executor, continuation: { task -> Int in
-                    OSAtomicIncrement32(&count)
-                    return i
-                })
+                    .continueWith(executor, continuation: { task -> Int in
+                        OSAtomicIncrement32(&count)
+                        return i
+                    })
             tasks.append(task)
         }
 
@@ -462,13 +462,13 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWithTask(executor, continuation: { task -> Task<Int> in
-                    OSAtomicIncrement32(&count)
-                    if i == 20 {
-                        return Task.cancelledTask()
-                    }
-                    return Task(i)
-                })
+                    .continueWithTask(executor, continuation: { task -> Task<Int> in
+                        OSAtomicIncrement32(&count)
+                        if i == 20 {
+                            return Task.cancelledTask()
+                        }
+                        return Task(i)
+                    })
             tasks.append(task)
         }
 
@@ -494,10 +494,10 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(continuation: { task in
-                    OSAtomicIncrement32(&count)
-                    throw NSError(domain: "bolts", code: i, userInfo: nil)
-                })
+                    .continueWith(continuation: { task in
+                        OSAtomicIncrement32(&count)
+                        throw NSError(domain: "bolts", code: i, userInfo: nil)
+                    })
             tasks.append(task)
         }
 
@@ -536,10 +536,10 @@ class TaskTests: XCTestCase {
         })
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(executor, continuation: { task -> Int in
-                    OSAtomicIncrement32(&count)
-                    return i
-                })
+                    .continueWith(executor, continuation: { task -> Int in
+                        OSAtomicIncrement32(&count)
+                        return i
+                    })
             tasks.append(task)
         }
 
@@ -568,10 +568,10 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(Double(i) * 0.5)
-                .continueWithTask(executor, continuation: { task -> Task<Void> in
-                    OSAtomicIncrement32(&count)
-                    return Task(error: error)
-                })
+                    .continueWithTask(executor, continuation: { task -> Task<Void> in
+                        OSAtomicIncrement32(&count)
+                        return Task(error: error)
+                    })
             tasks.append(task)
         }
 
@@ -599,10 +599,10 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(Double(i) * 0.5)
-                .continueWithTask(executor, continuation: { task -> Task<Int> in
-                    OSAtomicIncrement32(&count)
-                    return Task.cancelledTask()
-                })
+                    .continueWithTask(executor, continuation: { task -> Task<Int> in
+                        OSAtomicIncrement32(&count)
+                        return Task.cancelledTask()
+                    })
             tasks.append(task)
         }
 
@@ -638,19 +638,108 @@ class TaskTests: XCTestCase {
         Task<Void>.cancelledTask().continueWith { _ in
             count += 1
             XCTAssertEqual(count, 1)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 2)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 3)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 4)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 5)
-            }.waitUntilCompleted()
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 2)
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 3)
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 4)
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 5)
+        }.waitUntilCompleted()
         XCTAssertEqual(count, 5)
+    }
+
+    // MARK: Cancellation
+
+    func testOnSuccessWithToken() throws {
+        let cts = CancellationTokenSource.cancellationTokenSource()
+        var task = Task<Void>.withDelay(0.1)
+
+        task = task.continueOnSuccessWith(.immediate, cts.token) {
+            XCTFail("Success block should not be triggered");
+        }
+
+        try cts.cancel()
+        task.waitUntilCompleted()
+        XCTAssertTrue(task.cancelled);
+    }
+
+    func testOnContinueWithToken() throws {
+        let cts = CancellationTokenSource.cancellationTokenSource()
+        var task = Task<Void>.withDelay(0.1)
+
+        task = task.continueWith(.immediate, cts.token) { _ in
+            XCTFail("Success block should not be triggered");
+        }
+
+        try cts.cancel()
+        task.waitUntilCompleted()
+        XCTAssertTrue(task.cancelled);
+    }
+
+
+    func testOnSuccessWithCancellationToken() throws {
+        let cts = CancellationTokenSource.cancellationTokenSource()
+        var task = Task(name)
+
+        try cts.cancel()
+
+        task = task.continueOnSuccessWith(.immediate, cts.token) { _ in
+            XCTFail("Success block should not be triggered")
+            return ""
+        }
+
+        XCTAssertTrue(task.cancelled);
+    }
+
+    func testOnContinueWithCancellationToken() throws {
+        let cts = CancellationTokenSource.cancellationTokenSource()
+        var task = Task(name)
+
+        try cts.cancel()
+
+        task = task.continueWith(.immediate, cts.token) { _ in
+            XCTFail("Success block should not be triggered")
+            return ""
+        }
+
+        XCTAssertTrue(task.cancelled);
+    }
+
+    func testDelayWithToken() throws {
+        let cts = CancellationTokenSource.cancellationTokenSource()
+        let task = Task<Void>.withDelay(0.1, cts.token)
+
+        try cts.cancel()
+        task.waitUntilCompleted()
+        XCTAssertTrue(task.cancelled, "Task should be cancelled immediately")
+    }
+
+    func testDelayWithCancelledToken() throws {
+        let cts = CancellationTokenSource.cancellationTokenSource()
+        try cts.cancel()
+
+        let task = Task<Void>.withDelay(0.1, cts.token)
+        XCTAssertTrue(task.cancelled, "Task should be cancelled immediately")
+    }
+
+    func testReturnTaskFromContinuationWithCancellation() throws {
+        let cts = CancellationTokenSource.cancellationTokenSource()
+        let expectation = self.expectation(description: "task")
+        let task = Task<Void>.withDelay(1)
+
+        task.continueWith(cts.token) { task -> Task<Void> in
+            try cts.cancel()
+            return Task<Void>.withDelay(10)
+        }.continueWith { t in
+            XCTAssertTrue(t.cancelled);
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 10.0, handler: nil)
     }
 }
