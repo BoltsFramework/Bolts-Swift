@@ -63,9 +63,9 @@ In addition to being able to have different states `completed`/`faulted`/`cancel
 
 There are special methods you can call on a task which accept a closure argument and will return the task object. Because they return tasks it means you can keep calling these methods – also known as _chaining_ – to perform logic in stages. This is a powerful approach that makes your code read as a sequence of steps, while harnessing the power of asynchronous execution. Here are 3 key functions you should know:
 
-1. use `continueWith` to inspect the task after it has ran and optionally modify the result
-1. use `continueOnSuccessWith` to perform logic only when task executed without errors
-1. use `continueOnSuccessWithTask` to add more work based on the result of the task
+1. Use `continueWith` to inspect the task after it has ran and perform more operations with the result
+1. Use `continueWithTask` to add more work based on the result of the previous task
+1. Use `continueOnSuccessWith` to perform logic only when task executed without errors
 
 For full list of available methods please see source code at **[Task+ContinueWith.swift][continueWith-source]**
 
