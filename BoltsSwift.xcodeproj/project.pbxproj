@@ -711,7 +711,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52A1D3597BF00552C9F /* BoltsSwift-watchOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -719,7 +718,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52A1D3597BF00552C9F /* BoltsSwift-watchOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -727,7 +725,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5291D3597BF00552C9F /* BoltsSwift-tvOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -735,7 +732,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5291D3597BF00552C9F /* BoltsSwift-tvOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -743,7 +739,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52D1D3597BF00552C9F /* BoltsSwiftTests-tvOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -751,7 +746,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52D1D3597BF00552C9F /* BoltsSwiftTests-tvOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -759,7 +753,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5281D3597BF00552C9F /* BoltsSwift-macOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -767,7 +760,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5281D3597BF00552C9F /* BoltsSwift-macOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -775,7 +767,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52C1D3597BF00552C9F /* BoltsSwiftTests-macOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -783,7 +774,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52C1D3597BF00552C9F /* BoltsSwiftTests-macOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -805,7 +795,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5271D3597BF00552C9F /* BoltsSwift-iOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -813,7 +802,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB5271D3597BF00552C9F /* BoltsSwift-iOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -821,7 +809,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52B1D3597BF00552C9F /* BoltsSwiftTests-iOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -829,7 +816,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 812DB52B1D3597BF00552C9F /* BoltsSwiftTests-iOS.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
