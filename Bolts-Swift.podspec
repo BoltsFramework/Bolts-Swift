@@ -9,8 +9,8 @@ Pod::Spec.new do |s|
   s.source       = { :git => 'https://github.com/BoltsFramework/Bolts-Swift.git', :tag => s.version.to_s }
 
   s.requires_arc = true
-  
-  s.swift_version = '4.0'
+
+  s.swift_version = '5.0'
 
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.10'
