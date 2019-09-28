@@ -67,7 +67,7 @@ class ExecutorTests: XCTestCase {
 
     func testQueueExecute() {
         let expectation = self.expectation(description: name)
-                let semaphore = DispatchSemaphore(value: 0)
+        let semaphore = DispatchSemaphore(value: 0)
         var finished = false
 
         Executor.queue(.global(qos: .default)).execute {
@@ -87,22 +87,21 @@ class ExecutorTests: XCTestCase {
 
         Executor.closure { closure in
             closure()
-            }.execute { () -> Void in
-                expectation.fulfill()
+        }.execute { () -> Void in
+            expectation.fulfill()
         }
 
         waitForTestExpectations()
     }
-    
+
     func testEscapingClosureExecute() {
         let expectation = self.expectation(description: name)
-        
         Executor.escapingClosure { closure in
             closure()
-            }.execute { () -> Void in
-                expectation.fulfill()
+        }.execute { () -> Void in
+            expectation.fulfill()
         }
-        
+
         waitForTestExpectations()
     }
 

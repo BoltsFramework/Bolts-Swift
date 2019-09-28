@@ -294,23 +294,23 @@ class TaskTests: XCTestCase {
             count += 1
             XCTAssertEqual(count, 1)
             return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 2)
-                return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 3)
-                return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 4)
-                return nil
-            }.continueWith { _ -> String? in
-                count += 1
-                XCTAssertEqual(count, 5)
-                expectation.fulfill()
-                return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 2)
+            return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 3)
+            return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 4)
+            return nil
+        }.continueWith { _ -> String? in
+            count += 1
+            XCTAssertEqual(count, 5)
+            expectation.fulfill()
+            return nil
         }
 
         waitForTestExpectations()
@@ -324,19 +324,19 @@ class TaskTests: XCTestCase {
         Task<Void>.cancelledTask().continueWith(executor) { _ in
             count += 1
             XCTAssertEqual(count, 1)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 2)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 3)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 4)
-            }.continueWith(executor) { _ in
-                count += 1
-                XCTAssertEqual(count, 5)
-                expectation.fulfill()
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 2)
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 3)
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 4)
+        }.continueWith(executor) { _ in
+            count += 1
+            XCTAssertEqual(count, 5)
+            expectation.fulfill()
         }
 
         waitForTestExpectations()
@@ -638,19 +638,19 @@ class TaskTests: XCTestCase {
         Task<Void>.cancelledTask().continueWith { _ in
             count += 1
             XCTAssertEqual(count, 1)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 2)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 3)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 4)
-            }.continueWith { _ in
-                count += 1
-                XCTAssertEqual(count, 5)
-            }.waitUntilCompleted()
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 2)
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 3)
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 4)
+        }.continueWith { _ in
+            count += 1
+            XCTAssertEqual(count, 5)
+        }.waitUntilCompleted()
         XCTAssertEqual(count, 5)
     }
 }

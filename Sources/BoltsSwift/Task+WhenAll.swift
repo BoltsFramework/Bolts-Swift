@@ -45,9 +45,9 @@ extension Task {
                         tcs.cancel()
                     } else if errorCount > 0 {
                         #if swift(>=4.1)
-                            tcs.set(error: AggregateError(errors: tasks.compactMap({ $0.error })))
+                        tcs.set(error: AggregateError(errors: tasks.compactMap({ $0.error })))
                         #else
-                            tcs.set(error: AggregateError(errors: tasks.flatMap({ $0.error })))
+                        tcs.set(error: AggregateError(errors: tasks.flatMap({ $0.error })))
                         #endif
                     } else {
                         tcs.set(result: ())

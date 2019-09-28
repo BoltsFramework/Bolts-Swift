@@ -44,7 +44,7 @@ public enum Executor {
      Passes closures to an executing closure.
      */
     case closure((() -> Void) -> Void)
-    
+
     /**
      Passes escaping closures to an executing closure.
      */

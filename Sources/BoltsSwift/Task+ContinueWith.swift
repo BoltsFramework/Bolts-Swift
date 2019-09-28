@@ -24,9 +24,9 @@ extension Task {
      - returns: The task resulting from the continuation
      */
     fileprivate func continueWithTask<S>(_ executor: Executor,
-                                  options: TaskContinuationOptions,
-                                  continuation: @escaping ((Task) throws -> Task<S>)
-        ) -> Task<S> {
+                                         options: TaskContinuationOptions,
+                                         continuation: @escaping ((Task) throws -> Task<S>)
+    ) -> Task<S> {
         let taskCompletionSource = TaskCompletionSource<S>()
         let wrapperContinuation = {
             switch self.state {
@@ -120,7 +120,7 @@ extension Task {
      */
     @discardableResult
     public func continueOnSuccessWith<S>(_ executor: Executor = .default,
-                                      continuation: @escaping ((TResult) throws -> S)) -> Task<S> {
+                                         continuation: @escaping ((TResult) throws -> S)) -> Task<S> {
         return continueOnSuccessWithTask(executor) { taskResult in
             let state = TaskState.fromClosure({
                 try continuation(taskResult)
@@ -139,7 +139,7 @@ extension Task {
      */
     @discardableResult
     public func continueOnSuccessWithTask<S>(_ executor: Executor = .default,
-                                          continuation: @escaping ((TResult) throws -> Task<S>)) -> Task<S> {
+                                             continuation: @escaping ((TResult) throws -> Task<S>)) -> Task<S> {
         return continueWithTask(executor, options: .RunOnSuccess) { task in
             return try continuation(task.result!)
         }
