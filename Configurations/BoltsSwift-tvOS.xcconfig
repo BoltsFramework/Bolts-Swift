@@ -8,12 +8,7 @@
 //
 
 #include "Shared/Platform/tvOS.xcconfig"
-#include "Shared/Product/DynamicFramework.xcconfig"
-#include "Version.xcconfig"
 
-PRODUCT_NAME = BoltsSwift
+#include "BoltsSwift-Shared.xcconfig"
+
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.tvos
-
-SWIFT_VERSION = 4.0
-
-INFOPLIST_FILE = $(SRCROOT)/Sources/Info.plist

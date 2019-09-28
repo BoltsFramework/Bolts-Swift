@@ -8,13 +8,9 @@
 //
 
 #include "Shared/Platform/iOS.xcconfig"
-#include "Shared/Product/LogicTests.xcconfig"
 
-PRODUCT_NAME = BoltsSwiftTests
+#include "BoltsSwiftTests-Shared.xcconfig"
+
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.ios.tests
 
 IPHONEOS_DEPLOYMENT_TARGET = 8.0
-
-SWIFT_VERSION = 4.0
-
-INFOPLIST_FILE = $(SRCROOT)/Tests/Info.plist

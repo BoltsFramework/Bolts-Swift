@@ -7,8 +7,17 @@
 // of patent rights can be found in the PATENTS file in the same directory.
 //
 
-#include "Shared/Platform/tvOS.xcconfig"
+#include "Shared/Product/DynamicFramework.xcconfig"
 
-#include "BoltsSwiftTests-Shared.xcconfig"
+#include "Version.xcconfig"
 
-PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.tvos.tests
+//
+// This file contains shared configuration for all "Framework" targets.
+// Only shared configurations belong here.
+//
+
+PRODUCT_NAME = BoltsSwift
+
+SWIFT_VERSION = 4.0
+
+INFOPLIST_FILE = $(SRCROOT)/Sources/Info.plist

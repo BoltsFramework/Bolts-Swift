@@ -7,8 +7,15 @@
 // of patent rights can be found in the PATENTS file in the same directory.
 //
 
-#include "Shared/Platform/tvOS.xcconfig"
+#include "Shared/Product/LogicTests.xcconfig"
 
-#include "BoltsSwiftTests-Shared.xcconfig"
+//
+// This file contains shared configuration for all "Tests" targets.
+// Only shared configurations belong here.
+//
 
-PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.tvos.tests
+PRODUCT_NAME = BoltsSwiftTests
+
+SWIFT_VERSION = 4.0
+
+INFOPLIST_FILE = $(SRCROOT)/Tests/Info.plist

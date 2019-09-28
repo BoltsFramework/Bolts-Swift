@@ -8,13 +8,9 @@
 //
 
 #include "Shared/Platform/macOS.xcconfig"
-#include "Shared/Product/LogicTests.xcconfig"
 
-PRODUCT_NAME = BoltsSwiftTests
+#include "BoltsSwiftTests-Shared.xcconfig"
+
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.macos.tests
 
 MACOSX_DEPLOYMENT_TARGET = 10.10
-
-SWIFT_VERSION = 4.0
-
-INFOPLIST_FILE = $(SRCROOT)/Tests/Info.plist
