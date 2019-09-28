@@ -5,6 +5,7 @@
 
 [![Podspec][podspec-svg]][podspec-link]
 [![Carthage compatible][carthage-svg]](carthage-link)
+[![Swift Package Manager compatible](swiftpm-svg)](swiftpm-link)
 [![License][license-svg]][license-link]
 
 [![Build Status][build-status-svg]][build-status-link]
@@ -188,7 +189,10 @@ We want to make contributing to this project as easy and transparent as possible
  [carthage-svg]: https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat
  [carthage-link]: https://github.com/carthage/carthage
 
+ [swiftpm-svg]: https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg?style=flat
+ [swiftpm-link]: https://github.com/apple/swift-package-manager
+
  [platforms-svg]: http://img.shields.io/cocoapods/p/Bolts-Swift.svg?style=flat
- [swift-version-svg]: https://img.shields.io/badge/Swift-4.0.x-orange.svg
+ [swift-version-svg]: https://img.shields.io/badge/Swift-5-orange.svg
 
  [continueWith-source]: https://github.com/BoltsFramework/Bolts-Swift/blob/master/Sources/BoltsSwift/Task%2BContinueWith.swift
