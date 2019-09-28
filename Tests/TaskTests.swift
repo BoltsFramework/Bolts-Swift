@@ -508,7 +508,7 @@ class TaskTests: XCTestCase {
             XCTAssertTrue(task.faulted)
             XCTAssertFalse(task.cancelled)
             guard let error = task.error as? AggregateError else {
-                XCTFail()
+                XCTFail("Not an aggregate error returned.")
                 expectation.fulfill()
                 return
             }
