@@ -16,6 +16,6 @@
 
 PRODUCT_NAME = BoltsSwiftTests
 
-SWIFT_VERSION = 4.0
+SWIFT_VERSION = 5.0
 
 INFOPLIST_FILE = $(SRCROOT)/Tests/Info.plist
