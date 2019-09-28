@@ -99,7 +99,7 @@ public enum Executor {
     }
 }
 
-extension Executor : CustomStringConvertible, CustomDebugStringConvertible {
+extension Executor: CustomStringConvertible, CustomDebugStringConvertible {
     /// A textual representation of `self`.
     public var description: String {
         switch self {
