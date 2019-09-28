@@ -106,6 +106,7 @@
 		812DB53B1D3597BF00552C9F /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		812DB53C1D3597BF00552C9F /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		812DB53D1D3597BF00552C9F /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
+		818DECFF233EED9700EABA07 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
 		81951A901D46BA2F00958108 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		81CC14EC1A9BE0A100B28F86 /* BoltsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BoltsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81CC14F61A9BE0A100B28F86 /* BoltsSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoltsSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -246,6 +247,7 @@
 		81D300611C93AF7300E1A1ED /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				818DECFF233EED9700EABA07 /* Package.swift */,
 				81D300621C93AF7300E1A1ED /* BoltsSwift */,
 				81D300731C93AF8C00E1A1ED /* Supporting Files */,
 			);
