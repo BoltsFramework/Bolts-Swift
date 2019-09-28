@@ -35,7 +35,7 @@ extension Task {
             if taskCompletionSource.task.completed {
                 break
             }
-            task.continueWith { task in
+            task.continueWith { _ in
                 taskCompletionSource.trySet(result: ())
             }
         }

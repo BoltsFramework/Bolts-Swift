@@ -52,7 +52,7 @@ class TaskTests: XCTestCase {
     func testWithDelay() {
         let expectation = self.expectation(description: name)
         let task = Task<String>.withDelay(0.01)
-        task.continueWith { task in
+        task.continueWith { _ in
             expectation.fulfill()
         }
 
@@ -280,7 +280,7 @@ class TaskTests: XCTestCase {
             XCTAssertTrue(task === initialTask)
         }
 
-        continuationTask.continueWith { task in
+        continuationTask.continueWith { _ in
             expectation.fulfill()
         }
         waitForTestExpectations()
@@ -401,7 +401,7 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(continuation: { task -> Int in
+                .continueWith(continuation: { _ -> Int in
                     OSAtomicIncrement32(&count)
                     return i
                 })
@@ -431,7 +431,7 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(executor, continuation: { task -> Int in
+                .continueWith(executor, continuation: { _ -> Int in
                     OSAtomicIncrement32(&count)
                     return i
                 })
@@ -462,7 +462,7 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWithTask(executor, continuation: { task -> Task<Int> in
+                .continueWithTask(executor, continuation: { _ -> Task<Int> in
                     OSAtomicIncrement32(&count)
                     if i == 20 {
                         return Task.cancelledTask()
@@ -494,7 +494,7 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(continuation: { task in
+                .continueWith(continuation: { _ in
                     OSAtomicIncrement32(&count)
                     throw NSError(domain: "bolts", code: i, userInfo: nil)
                 })
@@ -530,13 +530,13 @@ class TaskTests: XCTestCase {
         var count: Int32 = 0
         let executor = Executor.queue(DispatchQueue.global(qos: .default))
 
-        tasks.append(Task<Void>.withDelay(0.2).continueWith { task in
+        tasks.append(Task<Void>.withDelay(0.2).continueWith { _ in
             // Use max value of Int32, so we can use the same code across both 32 and 64 bit archs.
             return Int(arc4random_uniform(UInt32(Int32.max)))
         })
         for i in 1...20 {
             let task = Task<Void>.withDelay(0.5)
-                .continueWith(executor, continuation: { task -> Int in
+                .continueWith(executor, continuation: { _ -> Int in
                     OSAtomicIncrement32(&count)
                     return i
                 })
@@ -568,7 +568,7 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(Double(i) * 0.5)
-                .continueWithTask(executor, continuation: { task -> Task<Void> in
+                .continueWithTask(executor, continuation: { _ -> Task<Void> in
                     OSAtomicIncrement32(&count)
                     return Task(error: error)
                 })
@@ -599,7 +599,7 @@ class TaskTests: XCTestCase {
 
         for i in 1...20 {
             let task = Task<Void>.withDelay(Double(i) * 0.5)
-                .continueWithTask(executor, continuation: { task -> Task<Int> in
+                .continueWithTask(executor, continuation: { _ -> Task<Int> in
                     OSAtomicIncrement32(&count)
                     return Task.cancelledTask()
                 })
