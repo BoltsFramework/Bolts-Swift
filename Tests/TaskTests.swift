@@ -396,7 +396,7 @@ class TaskTests: XCTestCase {
     }
 
     func testWhenAllTasksSuccess() {
-        var tasks = Array<Task<Int>>()
+        var tasks = [Task<Int>]()
         var count: Int32 = 0
 
         for i in 1...20 {
@@ -425,7 +425,7 @@ class TaskTests: XCTestCase {
     }
 
     func testWhenAllTasksWithResultSuccess() {
-        var tasks = Array<Task<Int>>()
+        var tasks = [Task<Int>]()
         var count: Int32 = 0
         let executor = Executor.queue(DispatchQueue.global(qos: .default))
 
@@ -456,7 +456,7 @@ class TaskTests: XCTestCase {
     }
 
     func testWhenAllTasksWithCancel() {
-        var tasks = Array<Task<Int>>()
+        var tasks = [Task<Int>]()
         var count: Int32 = 0
         let executor = Executor.queue(DispatchQueue.global(qos: .default))
 
@@ -526,7 +526,7 @@ class TaskTests: XCTestCase {
     // MARK: When Any
 
     func testWhenAnyTasksSuccess() {
-        var tasks = Array<Task<Int>>()
+        var tasks = [Task<Int>]()
         var count: Int32 = 0
         let executor = Executor.queue(DispatchQueue.global(qos: .default))
 
@@ -560,7 +560,7 @@ class TaskTests: XCTestCase {
     }
 
     func testWhenAnyTasksWithErrors() {
-        var tasks = Array<Task<Void>>()
+        var tasks = [Task<Void>]()
         var count: Int32 = 0
 
         let executor = Executor.queue(DispatchQueue.global(qos: .default))
@@ -592,7 +592,7 @@ class TaskTests: XCTestCase {
     }
 
     func testWhenAnyTasksWithCancel() {
-        var tasks = Array<Task<Int>>()
+        var tasks = [Task<Int>]()
         var count: Int32 = 0
 
         let executor = Executor.queue(DispatchQueue.global(qos: .default))
