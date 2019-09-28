@@ -6,3 +6,4 @@ opt_in_rules:
 disabled_rules:
   - cyclomatic_complexity
   - variable_name
+  - no_fallthrough_only
