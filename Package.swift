@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "BoltsSwift",
-            targets: ["BoltsSwift"]),
+            targets: ["BoltsSwift"])
     ],
     targets: [
         .target(
@@ -20,7 +20,7 @@ let package = Package(
         .testTarget(
             name: "BoltsSwiftTests",
             dependencies: ["BoltsSwift"],
-            path: "Tests"),
+            path: "Tests")
     ],
     swiftLanguageVersions: [.v4,
                             .v4_2,
