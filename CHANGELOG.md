@@ -1,5 +1,20 @@
 # Change Log
 
+## [1.5.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.5.0) (2019-09-27)
+[Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.4.0...1.5.0)
+
+**Implemented enhancements:**
+
+- Add support for Swift Package Manager. [\#92](https://github.com/BoltsFramework/Bolts-Swift/pull/92) ([nlutsenko](https://github.com/nlutsenko))
+- Update to Swift 5 and Xcode 11. [\#91](https://github.com/BoltsFramework/Bolts-Swift/pull/91) ([nlutsenko](https://github.com/nlutsenko))
+
+**Merged pull requests:**
+
+- \[TravisCI\] fix it, test with Swift 4.0 and 4.2 \(5.0 prepared\) [\#87](https://github.com/BoltsFramework/Bolts-Swift/pull/87) ([HeEAaD](https://github.com/HeEAaD))
+- Tweak README for readability & clarity [\#83](https://github.com/BoltsFramework/Bolts-Swift/pull/83) ([ermik](https://github.com/ermik))
+- Adding Code of Conduct file [\#79](https://github.com/BoltsFramework/Bolts-Swift/pull/79) ([facebook-github-bot](https://github.com/facebook-github-bot))
+- Add swift\_version to podspec [\#75](https://github.com/BoltsFramework/Bolts-Swift/pull/75) ([hcanzonetta](https://github.com/hcanzonetta))
+
 ## [1.4.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.4.0) (2018-07-19)
 [Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.3.0...1.4.0)
 
@@ -12,6 +27,7 @@
 **Merged pull requests:**
 
 - Changed casing of Executor enum value in README. [\#56](https://github.com/BoltsFramework/Bolts-Swift/pull/56) ([sjorsvb](https://github.com/sjorsvb))
+- Bolts 1.4.0 🔩 [\#74](https://github.com/BoltsFramework/Bolts-Swift/pull/74) ([nlutsenko](https://github.com/nlutsenko))
 
 ## [1.3.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.3.0) (2016-09-20)
 [Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.2.0...1.3.0)
@@ -29,7 +45,7 @@
 - Update a TaskCompletionSource usage example for Swift 3.0. [\#48](https://github.com/BoltsFramework/Bolts-Swift/pull/48) ([sapzildj](https://github.com/sapzildj))
 - Bolts 1.3.0 🔩 [\#42](https://github.com/BoltsFramework/Bolts-Swift/pull/42) ([nlutsenko](https://github.com/nlutsenko))
 - Set lowest deployment macOS target to 10.10. [\#41](https://github.com/BoltsFramework/Bolts-Swift/pull/41) ([nlutsenko](https://github.com/nlutsenko))
-- Fix README for TaskCompletionSource.cancel\(\) [\#37](https://github.com/BoltsFramework/Bolts-Swift/pull/37) ([ceyhuno](https://github.com/ceyhuno))
+- Fix README for TaskCompletionSource.cancel\(\) [\#37](https://github.com/BoltsFramework/Bolts-Swift/pull/37) ([ceyhun](https://github.com/ceyhun))
 
 ## [1.2.0](https://github.com/BoltsFramework/Bolts-Swift/tree/1.2.0) (2016-07-25)
 [Full Changelog](https://github.com/BoltsFramework/Bolts-Swift/compare/1.1.0...1.2.0)

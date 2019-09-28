@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Bolts-Swift'
-  s.version          = '1.4.0'
+  s.version          = '1.5.0'
   s.license          =  { :type => 'BSD' }
   s.summary          = 'Bolts is a collection of low-level libraries designed to make developing mobile apps easier.'
   s.homepage         = 'https://github.com/BoltsFramework'
