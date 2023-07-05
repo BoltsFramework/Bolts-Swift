@@ -12,3 +12,5 @@
 #include "BoltsSwift-Shared.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.watchos
+
+WATCHOS_DEPLOYMENT_TARGET = 4.0

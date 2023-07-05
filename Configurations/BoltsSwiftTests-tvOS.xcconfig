@@ -12,3 +12,5 @@
 #include "BoltsSwiftTests-Shared.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = com.bolts.swift.tvos.tests
+
+TVOS_DEPLOYMENT_TARGET = 11.0
